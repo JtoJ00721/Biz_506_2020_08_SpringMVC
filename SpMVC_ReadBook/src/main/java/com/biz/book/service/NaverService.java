@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,6 +16,7 @@ import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.biz.book.config.NaverSecret;
+import com.biz.book.model.BookVO;
 
 /*
  * naver API를 통하여 도서명을 보내고
@@ -108,8 +111,9 @@ public class NaverService {
 	}
 	
 	// jsonString을 parsing하여 Object(VO등등)으로 바꾸는 기능
-	public JSONArray getJsonObject(String jsonString) {
+	public List<BookVO> getJsonObject(String jsonString) {
 		
+		List<BookVO> bookList = new ArrayList<BookVO>();
 		JSONParser jParser = new JSONParser();
 		try {
 			// JSONParser도구를 사용하여 JSON형태의 문자열을
@@ -117,7 +121,17 @@ public class NaverService {
 			JSONObject jObject = (JSONObject) jParser.parse(jsonString);
 			JSONArray jArray = (JSONArray) jObject.get("items");
 			
-			return jArray;
+			int size = jArray.size();
+			for(int i = 0; i < size ; i++) {
+				JSONObject jo = (JSONObject) jArray.get(i);
+				BookVO bookVO = new BookVO();
+				bookVO.setTitle(jo.get("title").toString());
+				bookVO.setImage(jo.get("image").toString());
+				bookVO.setLink(jo.get("link").toString());
+				bookList.add(bookVO);
+			}
+			
+			return bookList;
 			
 		} catch (ParseException e) {
 			e.printStackTrace();
