@@ -5,9 +5,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>Insert title here</title>
 </head>
 <body>
-
+<form method="POST" action="${rootPath}/book">
+	<input name="book_name">
+	<button>검색</button>
+</form>
 </body>
 </html>
