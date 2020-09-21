@@ -29,9 +29,9 @@ public class HomeController {
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/book", method = RequestMethod.POST,produces = "application/json;charset=utf8")
+	@RequestMapping(value = "/book", method = RequestMethod.POST, produces = "application/json;charset=utf8")
 	public List<BookVO> naver(String book_name) {
-		String queryURL = naverService.queryURL(book_name);
+		String queryURL = naverService.queryURL("BOOK",book_name);
 		String resString = naverService.getNaverBook(queryURL);
 		List<BookVO> bookList = naverService.getJsonObject(resString);
 

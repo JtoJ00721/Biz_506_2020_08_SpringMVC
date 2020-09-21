@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Insert title here</title>
+<title>검색창</title>
 </head>
 <body>
 <form method="POST" action="${rootPath}/book">

@@ -3,9 +3,11 @@ package com.biz.book.service;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,11 +34,27 @@ import com.biz.book.model.BookVO;
 public class NaverService {
 
 	// 도서명을 매개변수로 받아서 queryURL을 생성
-	public String queryURL(String bookName) {
+	public String queryURL(String category, String bookName) {
 
 		String queryURL = NaverSecret.NAVER_BOOK_JSON;
+		if (category.equalsIgnoreCase("NEWS")) {
+			queryURL = NaverSecret.NAVER_NEWS_JSON;
+		} else if (category.equalsIgnoreCase("MOVIE")) {
+			queryURL = NaverSecret.NAVER_MOVIE_JSON;
+		} else if (category.equalsIgnoreCase("BOOK")) {
+			queryURL = NaverSecret.NAVER_BOOK_JSON;
+		}
+
+		String encodeText = null;
+		try {
+			// 한글 검색어를 위해서 검색어를 UFT-8로 encoding처리해주어야 한다.
+			encodeText = URLEncoder.encode(bookName.trim(), "UTF-8");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+
 		// url?query=자바
-		queryURL += "?query=" + bookName;
+		queryURL += "?query=" + encodeText;
 		// queryURL += String.format("?query=%s",bookName);
 
 		// 한번에 조회할 데이터 개수를 지정할수 있다
@@ -80,15 +98,15 @@ public class NaverService {
 				is = new InputStreamReader(httpConn.getErrorStream());
 			}
 
-				// InputStreamReader와 BufferedReader를 파이프로 연결
-				buffer = new BufferedReader(is);
-				StringBuffer sBuffer = new StringBuffer();
-				// String sBuffer = "";
-				String reader = new String();
-				while ((reader = buffer.readLine()) != null) {
-					sBuffer.append(reader);
-					// sBuffer += reader;
-				}
+			// InputStreamReader와 BufferedReader를 파이프로 연결
+			buffer = new BufferedReader(is);
+			StringBuffer sBuffer = new StringBuffer();
+			// String sBuffer = "";
+			String reader = new String();
+			while ((reader = buffer.readLine()) != null) {
+				sBuffer.append(reader);
+				// sBuffer += reader;
+			}
 
 //				while (true) {
 //					reader = buffer.readLine();
@@ -96,9 +114,9 @@ public class NaverService {
 //						break;
 //					sBuffer.append(reader);
 //				}
-				
-				buffer.close();
-				return sBuffer.toString();
+
+			buffer.close();
+			return sBuffer.toString();
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -109,10 +127,10 @@ public class NaverService {
 		return null;
 
 	}
-	
+
 	// jsonString을 parsing하여 Object(VO등등)으로 바꾸는 기능
 	public List<BookVO> getJsonObject(String jsonString) {
-		
+
 		List<BookVO> bookList = new ArrayList<BookVO>();
 		JSONParser jParser = new JSONParser();
 		try {
@@ -120,32 +138,39 @@ public class NaverService {
 			// JSONObject(객체)로 변환하기
 			JSONObject jObject = (JSONObject) jParser.parse(jsonString);
 			JSONArray jArray = (JSONArray) jObject.get("items");
-			
+
 			int size = jArray.size();
-			for(int i = 0; i < size ; i++) {
+			for (int i = 0; i < size; i++) {
 				JSONObject jo = (JSONObject) jArray.get(i);
-				BookVO bookVO = new BookVO();
-				bookVO.setTitle(jo.get("title").toString());
-				bookVO.setImage(jo.get("image").toString());
-				bookVO.setLink(jo.get("link").toString());
+
+				// bookVO = new BookVO(title, link, image, autho, price ...);
+
+//				BookVO bookVO = new BookVO();
+//				bookVO.setTitle(jo.get("title").toString());
+//				bookVO.setImage(jo.get("image").toString());
+//				bookVO.setLink(jo.get("link").toString());
+//				bookList.add(bookVO);
+
+				/*
+				 * VO에 @Builder를 설정하므로써 VO객체를 생성할때 Builder 패턴을 사용할수 있다. Gof 패턴중 생성자 패턴중 하나
+				 */
+				BookVO bookVO = BookVO.builder().title(jo.get("title").toString())
+						.image(jo.get("image") == null ? "noImage" : jo.get("image").toString())
+						.link(jo.get("link").toString())
+						.description(jo.get("description") == null ? "" : jo.get("description").toString()).build();
+
 				bookList.add(bookVO);
+
 			}
-			
+
 			return bookList;
-			
+
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+
 		return null;
-		
+
 	}
 
-	
-	
-	
-	
-	
-	
-	
 }
