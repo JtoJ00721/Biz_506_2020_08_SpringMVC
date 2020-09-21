@@ -7,6 +7,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
 
 import com.biz.book.config.NaverSecret;
@@ -64,52 +68,70 @@ public class NaverService {
 			int resCode = httpConn.getResponseCode();
 
 			BufferedReader buffer = null;
+			InputStreamReader is = null;
+
 			if (resCode == 200) {
 				// naver가 정상적으로 응답을 할것이다
-				InputStreamReader is = new InputStreamReader(httpConn.getInputStream());
+				is = new InputStreamReader(httpConn.getInputStream());
+			} else {
+				is = new InputStreamReader(httpConn.getErrorStream());
+			}
 
 				// InputStreamReader와 BufferedReader를 파이프로 연결
 				buffer = new BufferedReader(is);
-				
 				StringBuffer sBuffer = new StringBuffer();
-
+				// String sBuffer = "";
 				String reader = new String();
-				while (true) {
-					reader = buffer.readLine();
-					// if문 요로코롬이 되네???
-					if (reader == null)
-						break;
+				while ((reader = buffer.readLine()) != null) {
 					sBuffer.append(reader);
+					// sBuffer += reader;
 				}
-				
-				return sBuffer.toString();
 
-			} else {
-				// naver가 거부를 할것이다.
-				InputStreamReader is = new InputStreamReader(httpConn.getErrorStream());
+//				while (true) {
+//					reader = buffer.readLine();
+//					if (reader == null)
+//						break;
+//					sBuffer.append(reader);
+//				}
 				
-				buffer = new BufferedReader(is);
-				
-				StringBuffer eBuffer = new StringBuffer();
-				String reader = new String();
-				while(true) {
-					reader = buffer.readLine();
-					if(reader == null) break;
-					eBuffer.append(reader);
-				}
-				
-				return eBuffer.toString();
-			}
+				buffer.close();
+				return sBuffer.toString();
 
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return null;
+
+	}
+	
+	// jsonString을 parsing하여 Object(VO등등)으로 바꾸는 기능
+	public JSONArray getJsonObject(String jsonString) {
+		
+		JSONParser jParser = new JSONParser();
+		try {
+			// JSONParser도구를 사용하여 JSON형태의 문자열을
+			// JSONObject(객체)로 변환하기
+			JSONObject jObject = (JSONObject) jParser.parse(jsonString);
+			JSONArray jArray = (JSONArray) jObject.get("items");
+			
+			return jArray;
+			
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
 		return null;
-
+		
 	}
 
+	
+	
+	
+	
+	
+	
+	
 }
