@@ -7,17 +7,16 @@
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>Insert title here</title>
-</head>
-<body>
+
 <style>
 	form#books {
-		width:95%;
+		width:60%;
 		margin 10px auto
 	}
 	
 	form#books input {
 		display: block;
-		width: 70%;
+		width: 90%;
 		border: 1px solid #ddd;
 		margin: 5px auto;
 		padding: 8px;
@@ -28,6 +27,9 @@
 		border-radius: 10px;
 	}
 </style>
+</head>
+<body>
+
 
 <h3>도서정보 등록</h3>
 	<form method="POST" id="books">
