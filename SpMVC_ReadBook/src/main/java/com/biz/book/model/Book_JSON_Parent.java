@@ -3,6 +3,9 @@ package com.biz.book.model;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.apache.ibatis.type.Alias;
 
 /*
  * BookVO 객체들의 리스트를 담을 리스트 클래스
@@ -14,6 +17,9 @@ import javax.xml.bind.annotation.XmlElement;
  * 이때 변수의 이름은 API에서 보내주는 데이터의 이름을 참조하여 
  * 만들어야 한다.
  */
+
+@Alias("BookList")
+@XmlRootElement(name="channel")
 public class Book_JSON_Parent {
 	
 	public String rss; 				//	디버그를 쉽게 하고 RSS 리더기만으로 이용할 수 있게 하기 위해 만든 RSS 포맷의 컨테이너이며 그 외의 특별한 의미는 없다.
