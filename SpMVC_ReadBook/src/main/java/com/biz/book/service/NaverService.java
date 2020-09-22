@@ -87,6 +87,47 @@ public class NaverService {
 			// Property에 Client Id와 Client Secret을 저장하여 보냈는데
 			// 나에게 응답을 해줄래? 라고 묻는 코드
 			int resCode = httpConn.getResponseCode();
+			/*
+			 * HTTP 프로토콜에서 response Code
+			 * 200 : Server가 요청(Request)를 정상적으로 수신하고 response할 데이터를
+			 * 		준비중이다
+			 * 3xx : 요청은 정상적으로 수신햇으나 보낼 데이터가 없거나
+			 * 		이미 보냈기 때문에 다시 보내지 않겠다
+			 * 302 : redirect 했다
+			 * 304 : 직전에 보낸 데이터가 변화가 없으니 그대로 사용해라
+			 * 
+			 * 4xx : 요청정보가 문제가 있다
+			 * 404 : 요청주소(URL,URI)가 서버에서 서버에서 처리할 end point가 없다
+			 * 405 : 요청주소는 있으나 method(GET, POST)가 지정되지 않았다.
+			 * 		브라우저 주소창에
+			 * 		http://localhost:8080/book/input 라고 request를 했는데
+			 * 		서버에 @RequestMapping(value="/input",method=POST)만 있을때
+			 * 
+			 * 		form의 action="/input" method=POST로 지정된 데이터를
+			 * 		submit 했는데
+			 * 		서버에 @RequestMapping(value="/input",method=GET)만 있을때
+			 * 403 : 요청권한이 없다. 인증이 잘못되었거나 ROLL(역할)이 잘못 되었다
+			 * 400 : form에 데이터를 입력하고 서버로 전송했을때
+			 * 		Controller 의 매개변수 차원에서 분제가 발생했을때
+			 * 		<input name="age">라는 input box에 값을 입력하지 않고 submit을 했는데
+			 * 		public String input(int age) 라고 Controller method의 매개변수로
+			 * 			설정해 두었을때
+			 * 
+			 * 		spring의 Dispatcher는 age 변수에 담긴 값을 int 형으로 형변환을 
+			 * 			시도한다
+			 * 			이때 input box에 아무런 값이 없으면
+			 * 			age = Integer.valueOf("")의 코드가 실행되는 것과 같다
+			 * 			이럴때 내부에서 exception이 qkftodgkrh
+			 * 			res code로 400을 보낸다
+			 * 
+			 * 500 : Server Internal Error
+			 * 		사용자의 요청을 터리하는 과정에서
+			 * 		Controller, Service, Dao 등등 코드를 실행하는 도중
+			 * 		어떠한 원인으로 exception이 발생했을때
+			 * 
+			 * 		오류메시지를 제일 하단부터 거꾸로 검토해 나가자
+			 * 		Error Stack 메시지는 발생된 순서가 역순으로 나타나기 때문
+			 */
 
 			BufferedReader buffer = null;
 			InputStreamReader is = null;
@@ -101,6 +142,9 @@ public class NaverService {
 			// InputStreamReader와 BufferedReader를 파이프로 연결
 			buffer = new BufferedReader(is);
 			StringBuffer sBuffer = new StringBuffer();
+			
+			// naver가 보낸 payload(response data)를 한개의 문자열로
+			// 통합하여 수신한다
 			// String sBuffer = "";
 			String reader = new String();
 			while ((reader = buffer.readLine()) != null) {
@@ -116,6 +160,7 @@ public class NaverService {
 //				}
 
 			buffer.close();
+			// sBuffer에 append한 문자열을 한개의 문자열로 변환하여 return
 			return sBuffer.toString();
 
 		} catch (MalformedURLException e) {
@@ -132,6 +177,16 @@ public class NaverService {
 	public List<BookVO> getJsonObject(String jsonString) {
 
 		List<BookVO> bookList = new ArrayList<BookVO>();
+		
+		/*
+		 * JSON* 클래스를 사용하여 JSON형태의 문자열을 객체로 변환하기
+		 * 1. JSONParser를 사용하여 JSONObject로 변환
+		 * 2. JSONObject에서 "items"를 기준으로 잘라서 JSONArray로 변환
+		 * 3. JSONArray를 for문으로 반복하면서 각 요소를 다시 JSONObject로 변환
+		 * 4. 요소로 변환된 JSONObject에서 각각의 항목을 추출하여 VO에 담기
+		 * 5. VO를 List에 add() 하기
+		 */
+		
 		JSONParser jParser = new JSONParser();
 		try {
 			// JSONParser도구를 사용하여 JSON형태의 문자열을
@@ -153,6 +208,38 @@ public class NaverService {
 
 				/*
 				 * VO에 @Builder를 설정하므로써 VO객체를 생성할때 Builder 패턴을 사용할수 있다. Gof 패턴중 생성자 패턴중 하나
+				 * 
+				 * 빌드패턴을 사용하여 bookVO 객체 생성
+				 * 일반적인 VO객체를 생성하고 데이터를 Setting하는 방법
+				 * 1. 비어있는 Vo객체를 생성하고 vo = new VO();
+				 * 		setter method를 사용하여 데이터를 입력하는 방법
+				 * 2. 생성자에 값을 설정하고 VO객체를 생성
+				 * 			: vo = new VO(값1,값2,값3...)
+				 * 	생성자에 값을 설정(주입)하고 VO객체를 생성하는 방법은
+				 * 가.	데이터의 순서가 완전히 개발자 책임이다
+				 * 			혹여 순서가 바뀐채로 VO객체가 생성되면
+				 * 			이후에 발생하는 모든 문제를 개발자가 책임져야 한다.
+				 * 나.	일부 데이터만 사용하여 객체를 생성하면
+				 * 			생성자를 필요한 매개변수만 있는 상태로
+				 * 			또다시 맍들어야 한다.
+				 * 		vo = new(값1,값2) : VO(String 값1, String 값2)
+				 * 		vo = new VO(값1,값2,값3) : VO(String 값1, String 값2, String 값3)
+				 * 		많은 생성자의 충복선언이 발생할 수 있다.
+				 * 
+				 * 3. Builder(Build)패턴을 사용한 객체 생성
+				 * 		VO = VO.builder()
+				 * 				.변수1(값1)
+				 * 				.변수2(값2)
+				 * 				.변수3(값3)
+				 * 				.build();
+				 * 		가. 생성자를 통해서 객체를 필요할시 즉시 생성한다.
+				 * 		나. 생성자에 매개변수를 주입하는 방식인데
+				 * 			여기서는 필요한 데이터만 매개변수로 주입할수 있다.
+				 * 			모든 변수를 생성자에 주입할 필요가 없다.
+				 * 		다. 매개변수를 주입할때 set*() 와 같은 method를 사용하지 않고
+				 * 			매개변수의 이름을 통해 직접 설정할 수 있다.
+				 * 		라. 객체를 생성할때 객체 chaining 코딩을 사용할수 있다
+				 * 			객체.변수1().변수2().변수3().변수4().변수5()
 				 */
 				BookVO bookVO = BookVO.builder().title(jo.get("title").toString())
 						.image(jo.get("image") == null ? "noImage" : jo.get("image").toString())
