@@ -21,8 +21,12 @@ import lombok.extern.slf4j.Slf4j;
 public class NaverController {
 
 	@Autowired
-	@Qualifier("naverServiceV2")
-	private NaverService naverService;
+	@Qualifier("naverServiceV1")
+	private NaverService<BookVO> nServiceV1;
+
+	@Autowired
+	@Qualifier("naverServiceV2_XML")
+	private NaverService<BookVO> nServiceV2;
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)
 	public String search(String search_text) {
@@ -32,28 +36,29 @@ public class NaverController {
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public String search(String category, String search_text, Model model) {
 
-		String queryURL = naverService.queryURL(category, search_text.trim());
-		
+		String queryURL = nServiceV2.queryURL(category, search_text.trim());
+
 		// String jsonString = naverService.getNaverSearch(queryURL);
 		// V1에서 사용되는 method
 		// List<BookVO> bookList = naverService.getNaverList(jsonString);
-		
-		List<BookVO> bookList = naverService.getNaverList(queryURL);
-		
+
+		List<BookVO> bookList = nServiceV2.getNaverList(queryURL);
+
 		model.addAttribute("NAVERS", bookList);
 
 		return "naver";
 	}
 
 	@ResponseBody
-	@RequestMapping(value = "/api", method = RequestMethod.POST, produces = "application/json;charset=utf8")
-	public List<BookVO> naver(String book_name) {
-		
-		String queryURL = naverService.queryURL("BOOK", book_name);
-		String jsonString = naverService.getNaverSearch(queryURL);
-		List<BookVO> bookList = naverService.getNaverList(jsonString);
-		
-		return bookList;
+	@RequestMapping(value = "/api", method = RequestMethod.POST, produces = "application/xml;charset=utf8")
+	public String naver(String book_name) {
+
+		String queryURL = nServiceV1.queryURL("BOOK", book_name);
+		String retString = nServiceV1.getNaverSearch(queryURL);
+		return retString;
+
+		// List<BookVO> bookList = naverService.getNaverList(jsonString);
+		// return bookList;
 	}
 
 }

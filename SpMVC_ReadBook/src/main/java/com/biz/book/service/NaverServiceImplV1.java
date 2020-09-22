@@ -36,13 +36,13 @@ public class NaverServiceImplV1 implements NaverService<BookVO>{
 	// 도서명을 매개변수로 받아서 queryURL을 생성
 	public String queryURL(String category, String bookName) {
 
-		String queryURL = NaverSecret.NAVER_BOOK_JSON;
+		String queryURL = NaverSecret.NAVER_BOOK_XML;
 		if (category.equalsIgnoreCase("NEWS")) {
 			queryURL = NaverSecret.NAVER_NEWS_JSON;
 		} else if (category.equalsIgnoreCase("MOVIE")) {
 			queryURL = NaverSecret.NAVER_MOVIE_JSON;
 		} else if (category.equalsIgnoreCase("BOOK")) {
-			queryURL = NaverSecret.NAVER_BOOK_JSON;
+			queryURL = NaverSecret.NAVER_BOOK_XML;
 		}
 
 		String encodeText = null;

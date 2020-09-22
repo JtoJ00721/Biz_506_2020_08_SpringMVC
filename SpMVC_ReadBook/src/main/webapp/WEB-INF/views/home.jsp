@@ -9,7 +9,7 @@
 <title>검색창</title>
 </head>
 <body>
-<form method="POST" action="${rootPath}/book">
+<form method="POST" action="${rootPath}/naver/api">
 	<input name="book_name">
 	<button>검색</button>
 </form>
