@@ -8,6 +8,7 @@
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>짭이버</title>
+
 <style>
 body {
 	display: flex;
@@ -46,7 +47,6 @@ nav#search-nav form input {
 section#search-list {
 	display: flex;
 	flex-flow: column nowrap;
-	height: 100%;
 	justyfy-content: center;
 }
 
@@ -57,6 +57,7 @@ section#search-list div {
 	border-radius: 5px;
 	margin: 5px;
 	padding: 5px;
+	transition: 0.7s;
 }
 
 section#search-list div:hover {
