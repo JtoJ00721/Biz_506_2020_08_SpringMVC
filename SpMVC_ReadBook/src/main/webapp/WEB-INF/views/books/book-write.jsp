@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>Insert title here</title>
+<title>돗어관</title>
 </head>
 <body>
 <style>
@@ -87,24 +87,55 @@
 	
 	section#book-modal {
 		display: none;
+		flex-flow:column wrap;
 		position: fixed;
 		justify-content: center;
+		align-items: center;
 		
 		top: 0;
 		left: 0;
 		width:100%;
 		height:100%;
-		align-items: center;
 		background-color: rgba(0,0,0,0.4);
+		
+	}
+	section#book-modal .header{
+		height: 50px;
+		width: 60%;
+		text-align: right;
+		background-color: cornflowerblue;
+		border-top-left-radius: 10px; 
+		border-top-right-radius: 10px;
 	}
 	
-	section#book-modal div {
-		width: 60%;
+	section#book-modal div.header span {
+		font-size: 30px;
+		font-weight: 300;
+		color: white;
+		margin: 15px;
+		cursor: pointer;
+	}
+	
+	section#book-modal div.header span:hover {
+		color: crimson;
+	}
+	
+	section#book-modal article {
 		height: 70%;
+		width: 60%;
+		box-shadow: 10px 10px 10px lightsteelblue;
+	}
+	
+	section#book-modal article div {
+		width: 100%;
+		height: 100%;
 		background-color: rgba(255,255,255,1);
 		border:1px solid rgba(0,0,255,1);
 		overflow:auto;
 		padding: 10px;
+		border-bottom-left-radius: 10px;
+		border-bottom-right-radius: 10px;
+		  
 	}
 </style>
 <script src="https://code.jquery.com/jquery-latest.min.js">
@@ -143,10 +174,33 @@
 			$("#book-modal").css("display","flex")
 		})
 		
-		$("#book-modal").click(function(){
+		// x표시를 클릭했을때 modal 창 닫기
+		$("#book-modal div.header span").click(function(){
 			$("#book-modal").css("display","none")
 		})
+		
+		/*
+			동적으로 구현된 HTML에 event핸들링 설정하기
+			현재 document(HTML문서)가 생성되는 동안에 없던 tag를
+			JS(JQ)코드에서 동적으로 생성했을 경우 화면에 그려지는 것은
+			아무런 문제가 없으나
+			
+			JS에서 event핸들러를 설정할때 아직 화면에 없는 tag에 연결을 하면
+			무시해 버리고 없던일로 만들어 버린다.
+			
+			사후에(HTML문서가 완성된 후) JS 코드로 생성할 tag(id, class)에
+			event를 설정하려면 자체에 설정하지 않고
+			가장 상위 객체인 document에 on 함수를 사용하여 event를 설정한다.
+			$(document)..on("event","대상",function(){})
+			
+			주의사항
+		*/
+		$(document).on("click","div.book-select", function(){
+			let isbn = $(this).data("isbn")
+			alert("><")
+		})
 	})
+	
 </script>
 
 <h3>도서정보 등록</h3>
@@ -175,7 +229,12 @@
 </form>
 
 <section id="book-modal">
- <div id="search-result"></div>
+	<div class=header>
+		<span>&times;</span>
+	</div>
+	<article>
+		<div id="search-result"></div>
+	</article>
 </section>
 
 </body>

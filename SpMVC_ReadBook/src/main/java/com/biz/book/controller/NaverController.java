@@ -61,7 +61,7 @@ public class NaverController {
 
 		model.addAttribute("NAVERS", bookList);
 
-		return "naver/naver-list";
+		return "naver/naver-search-list";
 	}
 
 	@ResponseBody
