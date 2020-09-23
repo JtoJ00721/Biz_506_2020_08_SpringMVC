@@ -45,7 +45,7 @@ nav#search-nav form input {
 
 section#search-list {
 	display: flex;
-	flex-flow: row wrap;
+	flex-flow: column nowrap;
 	height: 100%;
 	justyfy-content: center;
 }

@@ -60,7 +60,7 @@
 	}
 	
 	form#books div.button-box {
-		width: 1018px;
+		width: 1000px;
 		text-align:right;
 	}
 	
@@ -70,7 +70,9 @@
 		
 		padding:0.5rem 12px;
 		border-radius: 5px;
+		transition: all 0.2s;
 	}
+	
 	form#books button#naver-search {
 		background-color: green;
 		color:white; 
@@ -85,58 +87,65 @@
 		box-shadow: 5px 5px 5px rgba(0,0,0,0.3);
 	}
 	
+	/*Modal 설정*/
+	
 	section#book-modal {
-		display: none;
-		flex-flow:column wrap;
 		position: fixed;
-		justify-content: center;
-		align-items: center;
-		
 		top: 0;
 		left: 0;
 		width:100%;
 		height:100%;
 		background-color: rgba(0,0,0,0.4);
-		
 	}
-	section#book-modal .header{
-		height: 50px;
-		width: 60%;
+	
+	article#modal-body {
+		position: absolute;
+		top: 50%;
+		left: 70%;
+		width: 70%;
+		height: 50%;
+		transform: translate(-50%, -50%);
+		display: flex;
+		flex-direction: column nowrap;
+	}
+	
+	div#modal-header{
+		flex:1;
+		width:70%;
 		text-align: right;
 		background-color: cornflowerblue;
-		border-top-left-radius: 10px; 
+		border-top-left-radius: 10px;
 		border-top-right-radius: 10px;
 	}
 	
-	section#book-modal div.header span {
+	div#modal-header span {
 		font-size: 30px;
-		font-weight: 300;
+		font-weight: 500;
 		color: white;
-		margin: 15px;
 		cursor: pointer;
+		margin: 15px;
+		transition: all 0.5s;
 	}
 	
-	section#book-modal div.header span:hover {
+	div#modal-header span:hover {
 		color: crimson;
 	}
 	
-	section#book-modal article {
-		height: 70%;
-		width: 60%;
-		box-shadow: 10px 10px 10px lightsteelblue;
-	}
-	
-	section#book-modal article div {
-		width: 100%;
-		height: 100%;
+	div#search-result {
+		flex:7;
+		width: 70%;
+		padding: 30px;
+		overflow: auto;
+		
 		background-color: rgba(255,255,255,1);
 		border:1px solid rgba(0,0,255,1);
-		overflow:auto;
-		padding: 10px;
+		
+		box-shadow: 10px 10px 10px rgba(0,0,0,0.5);
 		border-bottom-left-radius: 10px;
 		border-bottom-right-radius: 10px;
-		  
+		transition: all 0.7s;
 	}
+	
 </style>
 <script src="https://code.jquery.com/jquery-latest.min.js">
 	
@@ -163,7 +172,7 @@
 				// return하면 그 결과를
 				// #search-result div box에 채워서 보여달라
 				success : function(result) {
-					$("#search-result").html(result)
+					//("#search-result").html(result)
 				},
 					
 				error : function(error) {
@@ -175,8 +184,7 @@
 		})
 		
 		// x표시를 클릭했을때 modal 창 닫기
-		$("#book-modal div.header span").click(function(){
-			$("#book-modal").css("display","none")
+		$("#modal-header span").click(function(){
 		})
 		
 		/*
@@ -229,10 +237,10 @@
 </form>
 
 <section id="book-modal">
-	<div class=header>
-		<span>&times;</span>
-	</div>
-	<article>
+	<article id="modal-body">
+		<div id=modal-header>
+			<span>&times;</span>
+		</div>
 		<div id="search-result"></div>
 	</article>
 </section>
