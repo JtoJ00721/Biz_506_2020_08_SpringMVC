@@ -238,15 +238,31 @@
 			
 			// ajax 2.x 버전에서 추천하는 코드
 			$.ajax({
-				url : "${rootPath}/book/api/naver",
+				url : "${rootPath}/api/isbn",
 				method : "POST",
 				data : {"search_text" : isbn}
 			})
-			.done(function(result){
-				alert(result)
+			.done(function(bookVO){
+				// alert(JSON.stringify(bookVO))
+				$("#seq").val(bookVO.seq);
+				$("#title").val(bookVO.title);
+				$("#link").val(bookVO.link);
+				$("#image").val(bookVO.image);
+				$("#author").val(bookVO.author);
+				$("#price").val(bookVO.price);
+				$("#discount").val(bookVO.discount);
+				$("#publisher").val(bookVO.publisher);
+				$("#isbn").val(bookVO.isbn);
+				$("#description").val(bookVO.description);
+				$("#pubdate").val(bookVO.pubdate);
+				$("#buydate").val(bookVO.buydate);
+				$("#buyprice").val(bookVO.buyprice);
+				$("#buystore").val(bookVO.buystore);
+				$("#section#book-modal").css("display","none")
+				
 			})
 			.fail(function(xhr, textStatus,error){
-				alert("서버통신 오류")
+				alert("서버통신 오류 ><")
 			})
 			
 		})
