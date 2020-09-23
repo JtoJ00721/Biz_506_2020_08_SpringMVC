@@ -103,6 +103,8 @@
 		height: 70%;
 		background-color: rgba(255,255,255,1);
 		border:1px solid rgba(0,0,255,1);
+		overflow:auto;
+		padding: 10px;
 	}
 </style>
 <script src="https://code.jquery.com/jquery-latest.min.js">
@@ -120,25 +122,31 @@
 				return false
 			}
 			// ajax를 사용하여 서버에 네이버 검색 요청
+			// ajex로 서버의 /naver/search URL에 POST로 요청을 하면서
+			// search_text 변수에 title 변수에 담긴 값을 담아서 전달하고
 			$.ajax({
-				url : "${rootPath}/naver/search"
-				method : "POST"
-				data : {"search-text" : title},
+				url : "${rootPath}/naver/search",
+				method : "POST",
+				data : {"search_text" : title},
+				// 서버가 데이터 조회를 수행한 후 view(HTML코드)코드를
+				// return하면 그 결과를
+				// #search-result div box에 채워서 보여달라
 				success : function(result) {
-					
+					$("#search-result").html(result)
 				},
+					
 				error : function(error) {
 					alert("서버 통신 오류 ><")
 				}
 			})
 			
-			$("section#book-modal").css("display","flex")
+			$("#book-modal").css("display","flex")
 		})
 		
 		$("#book-modal").click(function(){
 			$("#book-modal").css("display","none")
 		})
-	)
+	})
 </script>
 
 <h3>도서정보 등록</h3>
@@ -167,7 +175,7 @@
 </form>
 
 <section id="book-modal">
-	<div id="search-result"><h1 color="black">노옹농이</h1></div>
+ <div id="search-result"></div>
 </section>
 
 </body>

@@ -35,9 +35,19 @@ public class NaverController {
 		return "naver";
 	}
 
+	/*
+	 * @RequestParam()
+	 * Controller의 매개변수를 재 정의하는 용도
+	 * 만약 client에서 보내는 변수 이름과 Controller에서 사용하는 변수 이름을
+	 * 다르게 하고 싶으면
+	 * @RequestParam(name="변수") String 내이름
+	 * 
+	 * client에서 해당 변수값을 빼먹고 전송을 했을때 오류를 최소화 하기 위해서
+	 * 		@RequestParam(name="내이름", required=false, defaltValue="농농이") String 내이름
+	 * 			클라이언트에서 내이름 변수에 값을 보내지 않으면 기본값인 농농이
+	 * 			문자열을 내이름 변수에 할당한다.
+	 */
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
-	// @RequestParam(name = "category", required = false, defaultValue = "BOOK")
-	// : 카테고리 매개 변수가 오지 않아도 무시하고 오지 않을 경우 임의로 BOOK 이라는 값을 담아 보낸다 
 	public String search(@RequestParam(name = "category", required = false, defaultValue = "BOOK") String category,
 			@RequestParam(name = "search_text") String search_text, Model model) {
 
