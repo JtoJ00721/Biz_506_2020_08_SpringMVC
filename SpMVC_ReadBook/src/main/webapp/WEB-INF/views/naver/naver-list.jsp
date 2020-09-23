@@ -83,16 +83,15 @@ img {
 		<c:forEach items="${NAVERS}" var="naver">
 			<div>
 				<h3>${naver.title}</h3>
-				<a href="${naver.link}" target="_new">
-				<c:if test="${naver.image == 'noImage'}">
-					<img src="${rootPath}/resources/images/noImage.png" width="70px">
-				</c:if>
-				<c:if test="${naver.image != 'noImage'}">
-				<img alt="네이버 이미지"
-					src="${naver.image}">
-				</c:if>
-					</a>
+				<a href="${naver.link}" target="_new"> <c:if
+						test="${naver.image == 'noImage'}">
+						<img src="${rootPath}/resources/images/noImage.png" width="70px">
+					</c:if> <c:if test="${naver.image != 'noImage'}">
+						<img alt="네이버 이미지" src="${naver.image}">
+					</c:if>
+				</a>
 				<p>${naver.description}</p>
+				<p>ISBN : ${naver.isbn}</p>
 			</div>
 		</c:forEach>
 	</section>
