@@ -9,14 +9,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Read Book 2020</title>
 <link rel="stylesheet" href="${rootPath}/static/css/index.css?ver=1" />
-<script src="https://code.jquery.com/jquery-latest.min.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js?ver=0"></script>
 <script>
 	// js 파일에서 el tag의 ${rootPath} 값을 참조하기 위해서
 	// rootPath 변수를 전역으로 선언해 둔다
 	// 어쩔수 없이 var로 선언해야 잘 인식된다
 	var rootPath = "${rootPath}"
 </script>
-<script src="${rootPath}/static/js/main-nav.js">
+<script src="${rootPath}/static/js/main-nav.js?ver=0">
 </script>
 </head>
 <body>
@@ -38,11 +38,17 @@
 	</nav>
 	<section id="main-section">
 	<c:choose>
-		<c:when test="${BODY == 'BODY-LIST }">
+		<c:when test="${BODY == 'BOOK-LIST' }">
 			<%@ include file="/WEB-INF/views/books/book-list.jsp" %>
 		</c:when>
+		<c:when test="${BODY == 'BOOK-WRITE' }">
+			<%@ include file="/WEB-INF/views/books/book-write.jsp" %>
+		</c:when>
+		<c:otherwise>
+			Are You Experienced
+		</c:otherwise>
 	</c:choose>
-	Are You Experienced?</section>
+	</section>
 	<footer>
 		<address>CopuRight &copy; moonlf2000@naver.com</address>
 	</footer>
