@@ -1,43 +1,48 @@
-		$(function) {
-			$("#naver-search").click(function() {
+$(function () {
+  $("#btn-save").click(function () {
+    // naver 로 부터 조회한 도서정보를 저장하는 까닭에
+    // 유효성검사는 일단 생략
+    $("form").submit();
+  });
 
-				let title = $("#title").val()
-				if (title === "") {
-					alert("도서명을 입력한 후 검색해 주세요 ><")
-					$("#title").focus()
-					return false
-				}
-				// 1.8 이전 버전의 ajax에서 추천하던 코드
-				// ajax를 사용하여 서버에 네이버 검색 요청
-				// ajex로 서버의 /naver/search URL에 POST로 요청을 하면서
-				// search_text 변수에 title 변수에 담긴 값을 담아서 전달하고
-				$.ajax({
-					url : "${rootPath}/naver/search",
-					method : "POST",
-					data : {
-						"search_text" : title
-					},
-					// 서버가 데이터 조회를 수행한 후 view(HTML코드)코드를
-					// return하면 그 결과를
-					// #search-result div box에 채워서 보여달라
-					success : function(result) {
-						$("#search-result").html(result)
-					},
+  $("#naver-search").click(function () {
+    let title = $("#title").val();
+    if (title === "") {
+      alert("도서명을 입력한 후 검색해 주세요 ><");
+      $("#title").focus();
+      return false;
+    }
+    // 1.8 이전 버전의 ajax에서 추천하던 코드
+    // ajax를 사용하여 서버에 네이버 검색 요청
+    // ajex로 서버의 /naver/search URL에 POST로 요청을 하면서
+    // search_text 변수에 title 변수에 담긴 값을 담아서 전달하고
+    $.ajax({
+      url: `${rootPath}/naver/search`,
+      method: "POST",
+      data: {
+        search_text: title,
+      },
+      // 서버가 데이터 조회를 수행한 후 view(HTML코드)코드를
+      // return하면 그 결과를
+      // #search-result div box에 채워서 보여달라
+      success: function (result) {
+        $("#search-result").html(result);
+      },
 
-					error : function(error) {
-						alert("서버 통신 오류 ><")
-					}
-				})
+      error: function (error) {
+        alert("서버 통신 오류 ><");
+      },
+    });
 
-				$("#book-modal").css("display", "block")
-			})
+    $("#book-modal").css("display", "block");
+  });
 
-			// x표시를 클릭했을때 modal 창 닫기
-			$("div#modal-header span").click(function() {
-				$("#book-modal").css("display", "none")
-			})
+  // x표시를 클릭했을때 modal 창 닫기
+  $("div#modal-header span").click(function () {
+    $("#book-modal").css("display", "none");
+  });
 
-			/*
+  /*
 				동적으로 구현된 HTML에 event핸들링 설정하기
 				현재 document(HTML문서)가 생성되는 동안에 없던 tag를
 				JS(JQ)코드에서 동적으로 생성했을 경우 화면에 그려지는 것은
@@ -67,44 +72,43 @@
 				동적으로 열리는 곳은 $(selector).click() 을 사용하자
 			 */
 
-			$(document).on("click", "div.book-select", function() {
-				let isbn = $(this).data("isbn")
+  $(document).on("click", "div.book-select", function () {
+    let isbn = $(this).data("isbn");
 
-				// 13자리 isbn 추출
-				// 코드의 오른쪽에서 13자리를 잘라내라
-				let length = isbn.length
-				isbn = isbn.substring(length - 13)
+    // 13자리 isbn 추출
+    // 코드의 오른쪽에서 13자리를 잘라내라
+    let length = isbn.length;
+    isbn = isbn.substring(length - 13);
 
-				// ajax 2.x 버전에서 추천하는 코드
-				$.ajax({
-					url : "${rootPath}/api/isbn",
-					method : "POST",
-					data : {
-						"search_text" : isbn
-					}
-				}).done(function(bookVO) {
-					// alert(JSON.stringify(bookVO))
-					$("#seq").val(bookVO.seq);
-					$("#title").val(bookVO.title);
-					$("#link").val(bookVO.link);
-					$("#image").val(bookVO.image);
-					$("#author").val(bookVO.author);
-					$("#price").val(bookVO.price);
-					$("#discount").val(bookVO.discount);
-					$("#publisher").val(bookVO.publisher);
-					$("#isbn").val(bookVO.isbn);
-					$("#description").val(bookVO.description);
-					$("#pubdate").val(bookVO.pubdate);
-					$("#buydate").val(bookVO.buydate);
-					$("#buyprice").val(bookVO.buyprice);
-					$("#buystore").val(bookVO.buystore);
-					$("#section#book-modal").css("display", "none")
-
-				}).fail(function(xhr, textStatus, error) {
-					alert("서버통신 오류 ><")
-				})
-
-			})
-			$("section#book-modal").css("display", "none")
-			
-			});
+    // ajax 2.x 버전에서 추천하는 코드
+    $.ajax({
+      url: `${rootPath}/api/isbn`,
+      method: "POST",
+      data: {
+        search_text: isbn,
+      },
+    })
+      .done(function (bookVO) {
+        // alert(JSON.stringify(bookVO))
+        $("#seq").val(bookVO.seq);
+        $("#title").val(bookVO.title);
+        $("#link").val(bookVO.link);
+        $("#image").val(bookVO.image);
+        $("#author").val(bookVO.author);
+        $("#price").val(bookVO.price);
+        $("#discount").val(bookVO.discount);
+        $("#publisher").val(bookVO.publisher);
+        $("#isbn").val(bookVO.isbn);
+        $("#description").val(bookVO.description);
+        $("#pubdate").val(bookVO.pubdate);
+        $("#buydate").val(bookVO.buydate);
+        $("#buyprice").val(bookVO.buyprice);
+        $("#buystore").val(bookVO.buystore);
+        $("#section#book-modal").css("display", "none");
+      })
+      .fail(function (xhr, textStatus, error) {
+        alert("서버통신 오류 ><");
+      });
+  });
+  $("section#book-modal").css("display", "none");
+});
