@@ -1,4 +1,6 @@
 $(function () {
+  $("section#book-modal").css("display", "none");
+
   $("#btn-save").click(function () {
     // naver 로 부터 조회한 도서정보를 저장하는 까닭에
     // 유효성검사는 일단 생략
@@ -98,7 +100,10 @@ $(function () {
         $("#price").val(bookVO.price);
         $("#discount").val(bookVO.discount);
         $("#publisher").val(bookVO.publisher);
-        $("#isbn").val(bookVO.isbn);
+
+        let isbn = bookVO.isbn;
+        isbn = isbn.substring(isbn.length - 17, isbn.length - 4);
+        $("#isbn").val(isbn);
         $("#description").val(bookVO.description);
         $("#pubdate").val(bookVO.pubdate);
         $("#buydate").val(bookVO.buydate);
@@ -110,5 +115,4 @@ $(function () {
         alert("서버통신 오류 ><");
       });
   });
-  $("section#book-modal").css("display", "none");
 });

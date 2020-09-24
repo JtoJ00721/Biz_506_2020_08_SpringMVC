@@ -1,5 +1,7 @@
 package com.biz.book.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,9 +39,15 @@ public class BooksController {
 
 	@RequestMapping(value = "/input", method = RequestMethod.GET)
 	public String input(Model model) {
+		
+		LocalDate localDate = LocalDate.now();
+		String todayString = DateTimeFormatter.ofPattern("YYYY-MM-dd").format(localDate);
+		
+		BookVO bookVO = BookVO.builder().buydate(todayString).build();
+				
 
 		model.addAttribute("BODY", "BOOK-WRITE");
-		model.addAttribute("bookVO", new BookVO());
+		model.addAttribute("bookVO", bookVO);
 
 		return "home";
 
