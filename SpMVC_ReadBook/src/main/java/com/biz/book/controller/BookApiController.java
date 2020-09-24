@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.biz.book.mapper.BookDao;
 import com.biz.book.model.BookVO;
 import com.biz.book.service.NaverService;
 
@@ -28,6 +29,7 @@ public class BookApiController {
 	@Qualifier(value = "naverServiceV2")
 	private NaverService<BookVO> nService;
 
+	@Autowired
 	private BookDao bookDao;
 
 	/*

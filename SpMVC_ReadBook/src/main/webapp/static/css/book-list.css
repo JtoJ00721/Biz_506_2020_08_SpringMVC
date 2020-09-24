@@ -35,6 +35,7 @@ table#book-list tr:nth-child(odd) {
 /*
 An+2 공식으로 게산되는 결과에 따라 선택된다
 어떤 같은 tag가 연속적으로 나올때 tag의 개수만큼 n : 0 ~ 개수 -1 증가 속성
+3n+2 : (0,3,6,8....) + 2
 */
 table#book-list tr:nth-child(n + 2):hover {
   background-color: #ccc;

@@ -81,7 +81,6 @@ public class BooksController {
 	// 맨 끝의 숫자 3을 Mapping 주소의 {book_seq}위치에 Mapping한다
 	// 매개변수에 설정된 PathVariable에 따라 String id 변수에
 	// 3의 값이 할당되어 method에 전달된다.
-	@ResponseBody
 	@RequestMapping(value = "/detail/{book_seq}", method = RequestMethod.GET, produces = "application/json;charset=utf8")
 	public String detail(@PathVariable("book_seq") String id, Model model) {
 
@@ -90,7 +89,9 @@ public class BooksController {
 		BookVO bookVO = bookDao.findById(seq);
 		// log.debug(bookVO.toString());
 
-		return "books/book-detail";
+		model.addAttribute("BOOKVO", bookVO);
+		model.addAttribute("BODY","BOOK-DETAIL");
+		return "home";
 	}
 
 }

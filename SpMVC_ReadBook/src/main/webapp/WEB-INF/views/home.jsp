@@ -17,6 +17,7 @@
 	var rootPath = "${rootPath}"
 </script>
 <script src="${rootPath}/static/js/main-nav.js?ver=0">
+	
 </script>
 </head>
 <body>
@@ -37,17 +38,20 @@
 		</ul>
 	</nav>
 	<section id="main-section">
-	<c:choose>
-		<c:when test="${BODY == 'BOOK-LIST' }">
-			<%@ include file="/WEB-INF/views/books/book-list.jsp" %>
-		</c:when>
-		<c:when test="${BODY == 'BOOK-WRITE' }">
-			<%@ include file="/WEB-INF/views/books/book-write.jsp" %>
-		</c:when>
-		<c:otherwise>
+		<c:choose>
+			<c:when test="${BODY == 'BOOK-LIST' }">
+				<%@ include file="/WEB-INF/views/books/book-list.jsp"%>
+			</c:when>
+			<c:when test="${BODY == 'BOOK-WRITE' }">
+				<%@ include file="/WEB-INF/views/books/book-write.jsp"%>
+			</c:when>
+			<c:when test="${BODY == 'BOOK-DETAIL' }">
+				<%@ include file="/WEB-INF/views/books/book-detail.jsp"%>
+			</c:when>
+			<c:otherwise>
 			Are You Experienced
 		</c:otherwise>
-	</c:choose>
+		</c:choose>
 	</section>
 	<footer>
 		<address>CopuRight &copy; moonlf2000@naver.com</address>
