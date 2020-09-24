@@ -7,4 +7,4 @@ import com.biz.book.model.BookVO;
  * 기본 CRUD 메서드를 
  * 별도로 정의하지 않아도 된다.
  */
-public interface BookDao extends GenericaDao<BookVO, Integer>{}
+public interface BookDao extends GenericaDao<BookVO, Long>{}

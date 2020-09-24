@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.biz.book.mapper.BookDao;
 import com.biz.book.model.BookVO;
@@ -39,12 +41,11 @@ public class BooksController {
 
 	@RequestMapping(value = "/input", method = RequestMethod.GET)
 	public String input(Model model) {
-		
+
 		LocalDate localDate = LocalDate.now();
 		String todayString = DateTimeFormatter.ofPattern("YYYY-MM-dd").format(localDate);
-		
+
 		BookVO bookVO = BookVO.builder().buydate(todayString).build();
-				
 
 		model.addAttribute("BODY", "BOOK-WRITE");
 		model.addAttribute("bookVO", bookVO);
@@ -57,23 +58,39 @@ public class BooksController {
 		// 자동으로 생성된다.
 		// return null;
 	}
-	
+
 	/*
-	 * spring form taglib을 사용하여 입력 write form을 만들었을 경우에는
-	 * VOP클래스, 객체를 매개변수로 사용할때
+	 * spring form taglib을 사용하여 입력 write form을 만들었을 경우에는 VOP클래스, 객체를 매개변수로 사용할때
+	 * 
 	 * @ModelAttribute("VO")를 필수로 사용하자
 	 */
-	@RequestMapping(value = "/input",method = RequestMethod.POST)
-	public String input (@ModelAttribute("bookVO") BookVO bookVO) {
-		
+	@RequestMapping(value = "/input", method = RequestMethod.POST)
+	public String input(@ModelAttribute("bookVO") BookVO bookVO) {
+
 		log.debug(bookVO.toString());
-		
+
 		int ret = bookDao.insert(bookVO);
-		if(ret < 1) {
+		if (ret < 1) {
 			// insert가 실패했으므로 그에 대한 메시지를 보여주는 페이지로 점프한다
 		}
-		
+
 		return "redirect:/books";
+	}
+
+	// localhost:8080/book/books/detail/3 이라고 Request가 오면
+	// 맨 끝의 숫자 3을 Mapping 주소의 {book_seq}위치에 Mapping한다
+	// 매개변수에 설정된 PathVariable에 따라 String id 변수에
+	// 3의 값이 할당되어 method에 전달된다.
+	@ResponseBody
+	@RequestMapping(value = "/detail/{book_seq}", method = RequestMethod.GET, produces = "application/json;charset=utf8")
+	public String detail(@PathVariable("book_seq") String id, Model model) {
+
+		log.debug("PATH: {}", id);
+		long seq = Long.valueOf(id);
+		BookVO bookVO = bookDao.findById(seq);
+		// log.debug(bookVO.toString());
+
+		return "books/book-detail";
 	}
 
 }

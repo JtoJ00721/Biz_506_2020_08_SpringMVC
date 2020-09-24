@@ -102,13 +102,17 @@ $(function () {
         $("#publisher").val(bookVO.publisher);
 
         let isbn = bookVO.isbn;
-        isbn = isbn.substring(isbn.length - 17, isbn.length - 4);
+        // isbn 변수에 들어있는 문자열 중에서 html tag 구조를 가진 단어가 있으면
+        // 무조건 제거하라
+        // 태그가 바뀌어도 isbn을 추출할 수 있다.
+        isbn = isbn.replace(/(<[^>]+)>)/gi, "");
+        // isbn = isbn.substring(isbn.length - 17, isbn.length - 4);
+
+        isbn = isbn.substring(isbn.length - 13);
         $("#isbn").val(isbn);
+
         $("#description").val(bookVO.description);
         $("#pubdate").val(bookVO.pubdate);
-        $("#buydate").val(bookVO.buydate);
-        $("#buyprice").val(bookVO.buyprice);
-        $("#buystore").val(bookVO.buystore);
         $("#section#book-modal").css("display", "none");
       })
       .fail(function (xhr, textStatus, error) {
