@@ -13,6 +13,7 @@ import org.jasypt.encryption.pbe.StandardPBEStringEncryptor;
 public class MakeDBSecurity {
 
 	public static void main(String[] args) {
+		
 
 		StandardPBEStringEncryptor pbe = new StandardPBEStringEncryptor();
 		Scanner scan = new Scanner(System.in);
@@ -51,8 +52,6 @@ public class MakeDBSecurity {
 			System.out.printf("E : %s, P : %s \n", encText, dencText);
 		}
 
-		// EGxhiBa4jd7MLPJ/AXBMiPjupUQDZuM9
-		// eAEvnE+1O6f4YItrJTVkZGnJ9LrmaDHt
 	}
 
 }
