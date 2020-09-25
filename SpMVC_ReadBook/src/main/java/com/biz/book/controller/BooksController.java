@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +27,7 @@ public class BooksController {
 	@Autowired
 	private BookDao bookDao;
 
+	@Transactional
 	// localhost:8080/book/books/ value부분을 문자열 배열로 만들지 않으면 반드시 이렇게 쳐야하는데 왠지 띠꺼우므로
 	// localhost:8080/book/books 이렇게 쳐도 되게 개조하자
 	// @ResponseBody // 객체를 그대로 JSON 형태로 보내라

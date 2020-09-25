@@ -53,10 +53,18 @@
 		<property name="typeAliasesPackage"
 			value="com.biz.book.model" />
 	</bean>
+	
 	<!-- sqlSessionTemplate -->
+	<!-- 
 	<bean class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="sqlFactory" index="0" />
 	</bean>
+	 -->
+	 <tx:annotation-driven/>
+	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+	 	<property name="dataSource" ref="ds"/>
+	 </bean>
+	 
 	<!-- mybatis-spring -->
 	<mybatis-spring:scan
 		base-package="com.biz.book.mapper" />
