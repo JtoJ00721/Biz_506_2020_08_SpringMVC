@@ -20,3 +20,6 @@
 * spring-security-web
 * spring-security-config
 * spring-securitu-taglibs
+
+## Spring Security와 별도로 DB 정보(username, password) 암호화
+* jasypt jasypt-spring Dependency
