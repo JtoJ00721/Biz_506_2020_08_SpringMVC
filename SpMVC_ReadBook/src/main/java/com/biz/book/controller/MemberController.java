@@ -7,10 +7,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.biz.book.model.UserDetailsVO;
+import com.biz.book.service.MemberService;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/member")
 public class MemberController {
+	
+	private final MemberService memberService;
 
 	/*
 	 * (VO)클래스를 Controller의 매개변수로 설정하고
@@ -31,6 +37,14 @@ public class MemberController {
 		model.addAttribute("memberVO", userVO);
 		model.addAttribute("BODY", "MEMBER-JOIN");
 		return "home";
+	}
+	
+	@RequestMapping(value = "/join",method=RequestMethod.POST)
+	public String join(@ModelAttribute("memberVO") UserDetailsVO userVO) {
+		
+		memberService.insert(userVO);
+		
+		return "redirect:/";
 	}
 
 	// logout.jsp 파일을 보여주기 위한 URL Mapping

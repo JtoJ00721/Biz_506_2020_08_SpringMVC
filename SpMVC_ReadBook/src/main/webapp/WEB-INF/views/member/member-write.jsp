@@ -40,7 +40,7 @@
 		</div>
 		<div id="btn_box">
 			<button type="button" id="btn_home" onclick="list()">홈으로</button>
-			<button type="button" id="btn_save">가입신청</button>
+			<button type="submit" id="btn_save">가입신청</button>
 		</div>
 	</fieldset>
 </form:form>
