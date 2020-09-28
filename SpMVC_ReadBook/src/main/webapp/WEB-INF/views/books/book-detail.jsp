@@ -54,7 +54,7 @@ table#book-detail .link th, table#book-detail .link td {
 
 section#read-book-body {
 	text-align: center;
-	width: 60px;
+	width: 60%;
 	border: 1px solid green;
 	margin: 5px auto;
 }

@@ -101,6 +101,8 @@ public class AuthProviderImpl implements AuthenticationProvider {
 
 	@Override
 	public boolean supports(Class<?> authentication) {
+		// support() 의 return 값이 false 이면 ...Token을 사용하지 않겠다는 의미
+		// 반드시 여기를 true로 해주어야 한다.
 		return true;
 	}
 
