@@ -59,7 +59,7 @@ public class UserDetailServiceImplV1 implements UserDetailsService{
 		userDetail = UserDetailsVO.builder()
 				.username(username)
 				.password("12341234")
-				.isEnabled(true)
+				.enabled(true)
 				.build();
 		
 		if(userDetail == null) {

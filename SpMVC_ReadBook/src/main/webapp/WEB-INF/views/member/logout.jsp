@@ -22,8 +22,24 @@ input {
 </head>
 <body>
 	<h3>로그아웃</h3>
+	<%
+		/*
+	spring security project에서 form method=POST로 설정할 경우
+	반드시 ${_csrf.parameterName}을 name으로 하고
+	${_csrf.token}을 value로 하는 input box를 포함해야만 된다
+
+	spring security 5.x 에서는 ${_csrf.parameterName}는 _csrf라는 문자열일 
+	뿐이지만 input name="_csrf" 라고 사용하지 않는다
+
+	security version에 따라 name 변수명이 다르기 때문이다.
+
+	spring security에서 logout
+	spring security에스는 logout을 반드시 POST method로 요청을 해야 한다.
+	*/
+	%>
 	<form method="POST" action="${rootPath}/logout">
-		<input name="${_csrf.parametername}" value="">
+		<input type="hidden" name="${_csrf.parameterName}"
+			value="${_csrf.token}">
 		<button>로그아웃</button>
 	</form>
 </body>
