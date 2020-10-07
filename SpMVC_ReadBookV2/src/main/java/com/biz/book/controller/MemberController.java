@@ -14,6 +14,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.biz.book.model.UserDetailsVO;
 import com.biz.book.service.MemberService;
 
+import ch.qos.logback.core.status.Status;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -38,12 +39,12 @@ public class MemberController {
 	 * @SessionAttributes(memberVO) 를 사용하려면
 	 * 반드시 memberVO를 생성하는 method가 클래스에 있어야 한다.
 	 * UserSetailsVO 클래스로 생성된 memberVO가 "memberVO" 이름으로 보관된다.
-	 * @SessionAttributes() 가 있는데 @ModelAttribute() 가 붙은 method가 없으면
-	 * 컴파일 오류가 난다.
+	 * 
+	 * @SessionAttributes() 가 있는데 @ModelAttribute() 가 붙은 method가 없으면 컴파일 오류가 난다.
 	 */
 	@ModelAttribute("memberVO")
 	public UserDetailsVO newMember() {
-		UserDetailsVO memberVO = new UserDetailsVO(); //UserDetailsVO.builder().build();
+		UserDetailsVO memberVO = new UserDetailsVO(); // UserDetailsVO.builder().build();
 		return memberVO;
 	}
 
@@ -68,21 +69,14 @@ public class MemberController {
 	}
 
 	/*
-	 * 회원가입 입력폼을 2개로 분리하여 사용하기 위해서
-	 * join get : member-write.jsp 가 열리고
-	 * join post : member-write2.jsp가 열린다.
-	 * member-write.jsp에서 입력한 id, 비밀번호를 join POST로 보내면
-	 * @ModelAttribute("memberVO")속성을 확인하고
-	 * server에 임시 보관중인 SessionAttribute("memberVO") 를 찾아서
-	 * 입력박스로부터 전달된 데이터를 보관한다.
-	 * member-write2.jsp를 열고 나머지 데이터를 입력한 후
-	 * join_comp POST로 보내면
-	 * 먼저 입력받아서 SessionAttributes에 보관중인 id, 비번과
-	 * 나중에 입력한 이름, 전화번호 등등과 함께 묶어서
-	 * join_comp userV에 담아준다.
-	 * 입력폼의 항목이 매우 많을때
-	 * 입력폼을 분리해서 코딩을 해도 SessionAttributes의 성질을 이용하여
-	 * 마치 입력마법사와 같은 기능을 구현할 수 있다.
+	 * 회원가입 입력폼을 2개로 분리하여 사용하기 위해서 join get : member-write.jsp 가 열리고 join post :
+	 * member-write2.jsp가 열린다. member-write.jsp에서 입력한 id, 비밀번호를 join POST로 보내면
+	 * 
+	 * @ModelAttribute("memberVO")속성을 확인하고 server에 임시 보관중인
+	 * SessionAttribute("memberVO") 를 찾아서 입력박스로부터 전달된 데이터를 보관한다. member-write2.jsp를
+	 * 열고 나머지 데이터를 입력한 후 join_comp POST로 보내면 먼저 입력받아서 SessionAttributes에 보관중인 id,
+	 * 비번과 나중에 입력한 이름, 전화번호 등등과 함께 묶어서 join_comp userV에 담아준다. 입력폼의 항목이 매우 많을때 입력폼을
+	 * 분리해서 코딩을 해도 SessionAttributes의 성질을 이용하여 마치 입력마법사와 같은 기능을 구현할 수 있다.
 	 */
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(@ModelAttribute("memberVO") UserDetailsVO userVO, Model model, String str) {
@@ -93,10 +87,8 @@ public class MemberController {
 	}
 
 	/*
-	 * @SessionAttributes()를 사용할때는
-	 * DB에 데이터를 insert, update를 최종수행 하고 나면
-	 * SessionStatus 클래스의 setComplete() method를 호출하여
-	 * 서버에 남아있는 메모리를 clear 해주어야 한다.
+	 * @SessionAttributes()를 사용할때는 DB에 데이터를 insert, update를 최종수행 하고 나면 SessionStatus
+	 * 클래스의 setComplete() method를 호출하여 서버에 남아있는 메모리를 clear 해주어야 한다.
 	 */
 	@RequestMapping(value = "/join_comp", method = RequestMethod.POST)
 	public String join(@ModelAttribute("memberVO") UserDetailsVO userVO, SessionStatus status) {
@@ -104,41 +96,57 @@ public class MemberController {
 		status.setComplete();
 		return "redirect:/";
 	}
-	
-	@RequestMapping(value = "/mypage" , method=RequestMethod.GET)
+
+	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(@ModelAttribute("memberVO") UserDetailsVO userVO, Authentication authProvider, Model model) {
-		
+
 		// 현재 로그인한 사용자의 정보를 추출하는 method
 		userVO = (UserDetailsVO) authProvider.getPrincipal();
-		model.addAttribute("memberVO",userVO);
-		model.addAttribute("BODY","MEMBER-JOIN");
+		userVO.setPassword("");
+
+		model.addAttribute("memberVO", userVO);
+		model.addAttribute("BODY", "MEMBER-UPDATE");
 		return "home";
 	}
-	
+
 	@RequestMapping(value = "/mypage", method = RequestMethod.POST)
 	public String mypage(@ModelAttribute("memberVO") UserDetailsVO userVO, Model model, String str) {
 
 		model.addAttribute("memberVO", userVO);
-		model.addAttribute("BODY", "MEMBER-JOIN-NEXT");
+		model.addAttribute("BODY", "MEMBER-UPDATE-NEXT");
 		return "home";
 	}
-	
+
+	@RequestMapping(value = "/update_comp", method = RequestMethod.POST)
+	public String update(@ModelAttribute("memberVO") UserDetailsVO userVO, SessionStatus status) {
+		memberService.update(userVO);
+		status.setComplete();
+		return "home";
+	}
+
 	@ResponseBody
-	@RequestMapping(value = "/id_check", method=RequestMethod.POST)
+	@RequestMapping(value = "/password_check", method = RequestMethod.POST)
+	public String password_check(String username, String password) {
+
+		return memberService.userNameAndPassword(username, password);
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/id_check", method = RequestMethod.POST)
 	public String id_check(String username) {
-		
+
 		// TDD(Test Driven Developer)
 		// memberService에 아직 구현되지 않은 method를 사용처에서 먼저 만들고
-		// 문법 오류가 발생하면 구체적으로 memberService method를 구현하는 방법	
+		// 문법 오류가 발생하면 구체적으로 memberService method를 구현하는 방법
 		UserDetailsVO userVO = memberService.findById(username);
-		
+
 		// userVO 가 null이면 username이 DB에 없다 (등록되지 않은 사용자)
-		if(userVO == null) {
+		if (userVO == null) {
 			return "OK";
 		} else {
 			return "FAIL";
 		}
-		
+
 	}
 
 	// logout.jsp 파일을 보여주기 위한 URL Mapping

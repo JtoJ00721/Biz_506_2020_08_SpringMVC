@@ -56,7 +56,14 @@
 
 
 	</insert>
-	<update id="update"></update>
+	<update id="update">
+		UPDATE tbl_member
+		SET m_name = #{m_name},
+			m_tel = #{m_tel},
+			m_address = #{m_address},
+			m_email = #{m_email}
+		WHERE m_userid = #{username}
+	</update>
 	<delete id="delete"></delete>
 
 </mapper> 

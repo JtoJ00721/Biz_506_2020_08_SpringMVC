@@ -7,128 +7,79 @@
 	href="${rootPath}/static/css/member-write.css?ver=1" />
 
 <script>
-
 	// 함수를 변수처럼 선언하는 ES6코드
 	// 함수를 변수처럼 선언하면 = JS 객체화된다
 	// 함수 = 객체 = 변수
 	// 1급함수 : 함수자체를 다른함수의 매개변수로 전달할 수 있다.
-	const id_check = function(username) {
-		
-		if(username === "") {
-			$("div#msg_username").css("display","block")
-			$("div#msg_username span").css("color","crimson")
-			$("div#msg_username span").text("회원 ID 을 입력해 주세요")
-			$("#username").focus()
+	const password_check = function() {
+		let username = $("#username").val()
+		let password = $("#password").val()
+
+		if (password === "") {
+			$("div#msg_password").css("display", "block")
+			$("div#msg_password span").css("color", "crimson")
+			$("div#msg_password span").text("회원정보를 수정하려면 비밀번호를 입력하세요")
+			$("#password").focus()
 			return false
 		}
-		
-				$.ajax({
-					url : "${rootPath}/member/id_check",
-					method : "POST",
-					data : {
-						"username" : username
-					},
-					beforeSend : function(ax) {
-						ax.setRequestHeader("${_csrf.headerName}",
-								"${_csrf.token}")
-					},
-					success : function(result) {
-						$("div#msg_username").css("display", "block")
-						if (result === "OK") {
-							// alert("사용가능한 username 입니다 ^^")
-							$("div#msg_username span").text(
-									" 는 사용가능한 회원 ID 입니다 ^^");
-							$("div#msg_username span").css("color", "blue");
-							$("#password").focus();
-						} else {
-							//alert("사용 불가능한 username ><")
-							$("div#msg_username span").text(
-									" 는 사용 불가능한 회원 ID 입니다 ><");
-							$("div#msg_username span").css("color", "crimson");
-							$("#username").focus();
-							return false
-						}
-					},
-					error : function() {
-						alert("서버 통신오류 ><")
-					}
-				})
+
+		$.ajax({
+			url : "${rootPath}/member/password_check",
+			method : "POST",
+			data : {
+				"username" : username,
+				"password" : password
+			},
+			beforeSend : function(ax) {
+				ax.setRequestHeader("${_csrf.headerName}", "${_csrf.token}")
+			},
+			success : function(result) {
+				$("div#msg_password").css("display", "block")
+				if (result === "FAIL") {
+					$("div#msg_password span").text(" 비밀번호가 일치하지 않습니다 ><");
+					$("div#msg_password span").css("color", "crimson");
+					$("#password").focus();
+					return false
+				} else {
+					$("div#msg_password").css("display", "none")
+					$("form").submit()
+				}
+			},
+			error : function() {
+				alert("서버 통신오류 ><")
+			}
+		})
 	}
 
 	$(function() {
-
 		$("#btn_save").click(function() {
-			let username = $("#username").val()
-			let password = $("#password").val()
-			let re_password = $("#re_password").val()
-
-			if (username === "") {
-				alert("회원 ID 를 입력해 주세요 ><")
-				$("#username").focus()
-				return false
-			}
-
-			if (password === "") {
-				alert("비밀번호를 입력해 주세요 ><")
-				$("#password").focus()
-				return false
-			}
-
-			if (re_password === "") {
-				alert("비밀번호 확인을 입력해 주세요 ><")
-				$("#re_password").focus()
-				return false
-			}
-
-			if (password !== re_password) {
-				alert("비밀번호와 확인란이 같지 않습니다 ><")
-				$("#password").val("")
-				$("re_password").val("")
-				$("#password").focus()
-				return false
-			}
-			$("form").submit()
-		})
-		
-		/*
-		input box에 focus() 가 있다가 다른곳으로 focus()가 이동할때
-		발생되는 event
-		ID 중복 버튼을 클릭하지 않아도 ID 중복 검사를 할수 있도록
-		username input box에 blur event를 설정
-		*/
-		$("#username").blur(function () {
-			let username = $("#username").val()
-			id_check(username)
-		})
-
-		$("#m_username").click(function() {
-
-			let username = $("#username").val()
-			id_check(username)
-
+			password_check()
 		})
 	})
 </script>
 
 <style>
-div#msg_username {
+div#msg_username, div#msq_password {
 	display: none;
 }
 </style>
-<%/*
+<%
+	/*
 Controller에서 @SessionAttributes()와 @ModelAttribute() 설정이 있고
 jsp에서 Spring form taglib를 사용하면서
 form:form에 modelAttribute를 설정해 두면
 현재 이 JSP에는 username, password, re_password만 있지만
 memberVO 만들어진 UserDetailsVO에 설정된 모든 변수가
 마치 input hiddeen으로 설정된것과 같이 포함되어 있다.
-*/ %>
+*/
+%>
 <form:form modelAttribute="memberVO" id="member-write">
 	<fieldset>
-		<legend>회원가입</legend>
+		<legend>회원정보 확인</legend>
 		<div>
 			<label>회원 ID</label>
-			<form:input id="username" path="username" class="username" />
+			<form:input id="username" path="username" class="username"
+				readonly="true" />
 		</div>
 		<div id="msg_username">
 			<label></label> <span></span>
@@ -141,11 +92,7 @@ memberVO 만들어진 UserDetailsVO에 설정된 모든 변수가
 		<div id="msg_password">
 			<label></label> <span></span>
 		</div>
-		
-		<div>
-			<label>비밀번호 확인</label> <input name="re_password" id="re_password"
-				type="password" />
-		</div>
+
 		<div id="btn_box">
 			<button type="button" id="btn_home" onclick="list()">홈으로</button>
 			<button type="button" id="btn_save">다음으로</button>

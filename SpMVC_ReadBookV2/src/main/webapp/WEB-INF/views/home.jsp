@@ -18,7 +18,7 @@
 	// rootPath 변수를 전역으로 선언해 둔다
 	// 어쩔수 없이 var로 선언해야 잘 인식된다
 	var rootPath = "${rootPath}"
-	
+
 	// main-nav.js 파일에서 el tag 변수값을 사용할수 없기 때문에
 	// 별도로 2개의 변수를 선언하고,
 	// HeaderName과 token값을 지정해준다.
@@ -76,6 +76,12 @@
 			</c:when>
 			<c:when test="${BODY == 'MEMBER-JOIN-NEXT' }">
 				<%@ include file="/WEB-INF/views/member/member-write2.jsp"%>
+			</c:when>
+			<c:when test="${BODY == 'MEMBER-UPDATE' }">
+				<%@ include file="/WEB-INF/views/member/member-update.jsp"%>
+			</c:when>
+			<c:when test="${BODY == 'MEMBER-UPDATE-NEXT' }">
+				<%@ include file="/WEB-INF/views/member/member-update2.jsp"%>
 			</c:when>
 			<c:otherwise>
 				<%@ include file="/WEB-INF/views/main-body.jsp"%>
