@@ -129,8 +129,6 @@ memberVO 만들어진 UserDetailsVO에 설정된 모든 변수가
 		<div>
 			<label>회원 ID</label>
 			<form:input id="username" path="username" class="username" />
-			<button type="button" id="m_username" class="m_code_gen">ID
-				중복검사</button>
 		</div>
 		<div id="msg_username">
 			<label></label> <span></span>
@@ -140,6 +138,10 @@ memberVO 만들어진 UserDetailsVO에 설정된 모든 변수가
 			<label>비밀번호</label>
 			<form:input id="password" path="password" type="password" />
 		</div>
+		<div id="msg_password">
+			<label></label> <span></span>
+		</div>
+		
 		<div>
 			<label>비밀번호 확인</label> <input name="re_password" id="re_password"
 				type="password" />

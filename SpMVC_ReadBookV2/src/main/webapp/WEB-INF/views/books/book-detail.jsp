@@ -58,7 +58,62 @@ section#read-book-body {
 	border: 1px solid green;
 	margin: 5px auto;
 }
+
+#btn-box {
+	width: 60%;
+	margin: 5px auto;
+	text-align: center;
+}
+
+button#btn-update, button#btn-delete, button#btn-toList {
+	margin: 5px;
+	padding: 12px 18px;
+	outline: none;
+	transition: all 0.5s;
+	border: none;
+}
+
+button#btn-update {
+	background-color: cornflowerblue;
+	color: white;
+}
+
+button#btn-delete {
+	background-color: coral;
+	color: white;
+}
+
+button#btn-toList {
+	background-color: gray;
+	color: white;
+}
+
+button:hover {
+	font-weight: bold;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.3);
+}
 </style>
+
+<script>
+	$(function() {
+
+		$("#btn-update").click(function() {
+			let seq = $(this).data("seq")
+			document.location.href = "${rootPath}/books/update/" + seq
+		})
+
+		$("#btn-delete").click(function() {
+			if (confirm("정말 삭제? ><")) {
+				let seq = $(this).data("seq")
+				document.location.replace("${rootPath}/books/delete/" + seq)
+			}
+		})
+		$("#btn-toList").click(function() {
+			document.location.href = "${rootPath}/books/"
+		})
+
+	})
+</script>
 
 <table id="book-detail">
 	<tr class="title">
@@ -110,6 +165,11 @@ section#read-book-body {
 		</th>
 	</tr>
 </table>
+<div id="btn-box">
+	<button id="btn-update" data-seq="${BOOKVO.seq}">수정</button>
+	<button id="btn-delete" data-seq="${BOOKVO.seq}">삭제</button>
+	<button id="btn-toList">리스트로</button>
+</div>
 <section id="read-book-body">
-	<%@ include file="/WEB-INF/views/read-book/read-book-write.jsp" %>
+	<%@ include file="/WEB-INF/views/read-book/read-book-write.jsp"%>
 </section>

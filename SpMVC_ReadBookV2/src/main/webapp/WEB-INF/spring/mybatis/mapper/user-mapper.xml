@@ -15,15 +15,14 @@
 	<!-- 이럴경우 SELECT SQL문에 projection을 적용하고 -->
 	<!-- 칼럼이름에 Alias 를 설정해 주어야 한다. -->
 	<select id="findById" resultType="UserDetail">
-		SELECT 
+		SELECT
 		m_userid AS username,
 		m_password AS password,
 		m_name,
 		m_tel,
 		m_address,
-		m_email
-
-
+		m_email,
+		enabled
 		FROM tbl_member WHERE
 		m_userid
 		= #{username}
@@ -37,7 +36,7 @@
 		M_TEL,
 		M_ADDRESS,
 		M_EMAIL,
-		ENABLE,
+		ENABLED,
 		AccountNonExpired,
 		AccountNonLocked,
 		CredentialsNonExpired
@@ -49,7 +48,7 @@
 		#{m_tel},
 		#{m_address},
 		#{m_email},
-		'1',
+		#{enabled},
 		'1',
 		'1',
 		'1'

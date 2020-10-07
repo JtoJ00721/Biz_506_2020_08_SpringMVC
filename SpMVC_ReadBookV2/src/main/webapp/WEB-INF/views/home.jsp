@@ -18,8 +18,15 @@
 	// rootPath 변수를 전역으로 선언해 둔다
 	// 어쩔수 없이 var로 선언해야 잘 인식된다
 	var rootPath = "${rootPath}"
+	
+	// main-nav.js 파일에서 el tag 변수값을 사용할수 없기 때문에
+	// 별도로 2개의 변수를 선언하고,
+	// HeaderName과 token값을 지정해준다.
+	// *.js 파일에서는 백팃을 사용해서 해당 변수를 사용할수 있다..
+	var csrf_header = "${_csrf.headerName}"
+	var csrf_token = "${_csrf.token}"
 </script>
-<script src="${rootPath}/static/js/main-nav.js?ver=1">
+<script src="${rootPath}/static/js/main-nav.js?ver=0">
 	
 </script>
 </head>
@@ -43,9 +50,7 @@
 
 			<sec:authorize access="isAuthenticated()">
 				<li id="menu-mypage">마이페이지</li>
-				<li><form:form action="${rootPath}/logout">
-						<button>로그아웃</button>
-					</form:form></li>
+				<li id="menu-logout">로그아웃</li>
 			</sec:authorize>
 			<sec:authorize access="hasRole('ADMIN')">
 				<li>관리자</li>

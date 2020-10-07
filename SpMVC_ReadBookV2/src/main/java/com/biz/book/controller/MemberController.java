@@ -1,10 +1,13 @@
 package com.biz.book.controller;
 
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -13,6 +16,16 @@ import com.biz.book.service.MemberService;
 
 import lombok.RequiredArgsConstructor;
 
+/*
+ * @SessionAttributes("memberVO")항목을 설정하면
+ * 서버의 메모리에 memberVO 이름으로 변수를 마련해 놓는다.
+ * 이 변수는 서버가 재시작하거나 하더라도 유지되는 성질이 있고
+ * 클라이언트에서 request를 수행했을때 메모리에 계속 유지된다.
+ * 
+ * RequestMapping method에 @ModelAttribute("객체이름") 클래스 객체 형식으로
+ * 매개변수가 있으면 메모리에 저장된 객체변수에서 값을 추출하여
+ * 객체 포함해 준다.
+ */
 @SessionAttributes("memberVO")
 @RequiredArgsConstructor
 @Controller
@@ -21,13 +34,17 @@ public class MemberController {
 
 	private final MemberService memberService;
 
+	/*
+	 * @SessionAttributes(memberVO) 를 사용하려면
+	 * 반드시 memberVO를 생성하는 method가 클래스에 있어야 한다.
+	 * UserSetailsVO 클래스로 생성된 memberVO가 "memberVO" 이름으로 보관된다.
+	 * @SessionAttributes() 가 있는데 @ModelAttribute() 가 붙은 method가 없으면
+	 * 컴파일 오류가 난다.
+	 */
 	@ModelAttribute("memberVO")
 	public UserDetailsVO newMember() {
-
-		UserDetailsVO memberVO = UserDetailsVO.builder().build();
-
+		UserDetailsVO memberVO = new UserDetailsVO(); //UserDetailsVO.builder().build();
 		return memberVO;
-
 	}
 
 	/*
@@ -50,6 +67,23 @@ public class MemberController {
 		return "home";
 	}
 
+	/*
+	 * 회원가입 입력폼을 2개로 분리하여 사용하기 위해서
+	 * join get : member-write.jsp 가 열리고
+	 * join post : member-write2.jsp가 열린다.
+	 * member-write.jsp에서 입력한 id, 비밀번호를 join POST로 보내면
+	 * @ModelAttribute("memberVO")속성을 확인하고
+	 * server에 임시 보관중인 SessionAttribute("memberVO") 를 찾아서
+	 * 입력박스로부터 전달된 데이터를 보관한다.
+	 * member-write2.jsp를 열고 나머지 데이터를 입력한 후
+	 * join_comp POST로 보내면
+	 * 먼저 입력받아서 SessionAttributes에 보관중인 id, 비번과
+	 * 나중에 입력한 이름, 전화번호 등등과 함께 묶어서
+	 * join_comp userV에 담아준다.
+	 * 입력폼의 항목이 매우 많을때
+	 * 입력폼을 분리해서 코딩을 해도 SessionAttributes의 성질을 이용하여
+	 * 마치 입력마법사와 같은 기능을 구현할 수 있다.
+	 */
 	@RequestMapping(value = "/join", method = RequestMethod.POST)
 	public String join(@ModelAttribute("memberVO") UserDetailsVO userVO, Model model, String str) {
 
@@ -58,11 +92,53 @@ public class MemberController {
 		return "home";
 	}
 
+	/*
+	 * @SessionAttributes()를 사용할때는
+	 * DB에 데이터를 insert, update를 최종수행 하고 나면
+	 * SessionStatus 클래스의 setComplete() method를 호출하여
+	 * 서버에 남아있는 메모리를 clear 해주어야 한다.
+	 */
 	@RequestMapping(value = "/join_comp", method = RequestMethod.POST)
 	public String join(@ModelAttribute("memberVO") UserDetailsVO userVO, SessionStatus status) {
 		memberService.insert(userVO);
 		status.setComplete();
 		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/mypage" , method=RequestMethod.GET)
+	public String mypage(@ModelAttribute("memberVO") UserDetailsVO userVO, Authentication authProvider, Model model) {
+		
+		// 현재 로그인한 사용자의 정보를 추출하는 method
+		userVO = (UserDetailsVO) authProvider.getPrincipal();
+		model.addAttribute("memberVO",userVO);
+		model.addAttribute("BODY","MEMBER-JOIN");
+		return "home";
+	}
+	
+	@RequestMapping(value = "/mypage", method = RequestMethod.POST)
+	public String mypage(@ModelAttribute("memberVO") UserDetailsVO userVO, Model model, String str) {
+
+		model.addAttribute("memberVO", userVO);
+		model.addAttribute("BODY", "MEMBER-JOIN-NEXT");
+		return "home";
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/id_check", method=RequestMethod.POST)
+	public String id_check(String username) {
+		
+		// TDD(Test Driven Developer)
+		// memberService에 아직 구현되지 않은 method를 사용처에서 먼저 만들고
+		// 문법 오류가 발생하면 구체적으로 memberService method를 구현하는 방법	
+		UserDetailsVO userVO = memberService.findById(username);
+		
+		// userVO 가 null이면 username이 DB에 없다 (등록되지 않은 사용자)
+		if(userVO == null) {
+			return "OK";
+		} else {
+			return "FAIL";
+		}
+		
 	}
 
 	// logout.jsp 파일을 보여주기 위한 URL Mapping

@@ -10,6 +10,7 @@ import com.biz.book.mapper.UserDao;
 import com.biz.book.model.UserDetailsVO;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /*
  * spring security 프로젝트에서 
@@ -22,6 +23,7 @@ import lombok.RequiredArgsConstructor;
  *  회사의 실정, 업무환경, 여러가지 여건들을 요구분석하여
  *  솔루션을 사용하는 회사에 최적화 하는 것
  */
+@Slf4j
 @RequiredArgsConstructor
 @Service("userDetailServiceV1")
 public class UserDetailServiceImplV1 implements UserDetailsService{
@@ -69,7 +71,16 @@ public class UserDetailServiceImplV1 implements UserDetailsService{
 			throw new UsernameNotFoundException(username + "정보를 찾을수 없음 ><");
 		}
 		
-		userDetail.setEnabled(true);
+		log.debug("USER : " + userDetail.toString());
+		
+		/*
+		 * 사용자정보 테이블에서 enable칼럼의 값이 boolean형으로
+		 * 설정을 하고
+		 * 최초에 회원가입을 했을때 이 값을 false로 세팅을 하고
+		 * email 인증과 같은 절차를 통과핬을떄 이 값을 true로 만들어서
+		 * 로그인이 될수 있도록 설정
+		 */
+		// userDetail.setEnabled(true);
 		return userDetail;
 	}
 	

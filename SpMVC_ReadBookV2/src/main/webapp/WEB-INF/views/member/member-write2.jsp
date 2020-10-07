@@ -6,6 +6,13 @@
 <link rel="stylesheet" type="text/css"
 	href="${rootPath}/static/css/member-write.css?ver=0" />
 
+<%/*
+ member-write.jsp에서 Controller 호출하고
+ Controller에서 member-write.jsp를 열어서 회원가입을 두 화면에 나누어서 실행한다.
+ 이때 member-write.jsp에 입력한 항목은
+ @SessionAttributes()와 @ModelAttribute()로 설정되어 있는 까닭에
+ 마치 한개 form에 모든 input box가 있고, 한번 모든 값을 입력한 것과 같은 효과를 낸다.
+*/%>
 <form:form modelAttribute="memberVO" id="member-write"
 	action="${rootPath}/member/join_comp">
 	<fieldset>

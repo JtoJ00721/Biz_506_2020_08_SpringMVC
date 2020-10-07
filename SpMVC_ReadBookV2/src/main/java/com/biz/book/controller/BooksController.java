@@ -100,11 +100,9 @@ public class BooksController {
 		}
 
 		/*
-		 * sessionAttribute를 Controller 에 설정했을 경우
-		 * 입력박스에 담긴값을 POST받아 DB에 반영한 후에는
-		 * 반드시 SessionStatus.setComplet() method를 호출해서
-		 * session을 clear 해주어야 한다.
-		 * 그렇지 않으면 한번 입력한 내용이 계속해서 입력창에 나타난다.
+		 * sessionAttribute를 Controller 에 설정했을 경우 입력박스에 담긴값을 POST받아 DB에 반영한 후에는 반드시
+		 * SessionStatus.setComplet() method를 호출해서 session을 clear 해주어야 한다. 그렇지 않으면 한번
+		 * 입력한 내용이 계속해서 입력창에 나타난다.
 		 */
 		status.setComplete();
 		return "redirect:/books";
@@ -133,6 +131,35 @@ public class BooksController {
 		model.addAttribute("readBookVO", readBookVO);
 		model.addAttribute("BODY", "BOOK-DETAIL");
 		return "home";
+	}
+
+	@RequestMapping(value = "/delete/{seq}", method = RequestMethod.GET)
+	public String delete(@PathVariable("seq") String seq, @ModelAttribute("bookVO") BookVO bookVO) {
+
+		long id = Long.valueOf(seq);
+		bookDao.delete(id);
+
+		return "redirect:/books";
+	}
+
+	@RequestMapping(value = "/update/{seq}", method = RequestMethod.GET)
+	public String update(@PathVariable("seq") String seq, @ModelAttribute("bookVO") BookVO bookVO, Model model) {
+
+		long id = Long.valueOf(seq);
+		bookVO = bookDao.findById(id);
+		model.addAttribute("bookVO", bookVO);
+		model.addAttribute("BODY", "BOOK-WRITE");
+
+		return "home";
+	}
+
+	@RequestMapping(value = "/update/{seq}", method = RequestMethod.POST)
+	public String update(@PathVariable("seq") String seq, @ModelAttribute("bookVO") BookVO bookVO, Model model,
+			SessionStatus status) {
+
+		bookDao.update(bookVO);
+		status.setComplete();
+		return "redirect:/books/detail/" + seq;
 	}
 
 }
