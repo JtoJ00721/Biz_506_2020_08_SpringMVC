@@ -16,11 +16,21 @@ $(function () {
     }
     // 1.8 이전 버전의 ajax에서 추천하던 코드
     // ajax를 사용하여 서버에 네이버 검색 요청
-    // ajex로 서버의 /naver/search URL에 POST로 요청을 하면서
-    // search_text 변수에 title 변수에 담긴 값을 담아서 전달하고
+    // spring security 프로젝트에서 POST로 전송할 경우
+    // csrf 관련 값을 같이 보내주어야 정상적으로 서버에서
+    // 데이터를 받아 들인다
+    // jsp 파일에서 spring form을 사용하면 관련된 부분을 자동으로
+    // 설정을 해주지만
+    // ajax를 사용해서 POST로 전송을 할때는
+    // 자동으로 설정이 되지 않기 때문에 임의로 값을 저정해 주어야 한다.
     $.ajax({
+      // ajex로 서버의 /naver/search URL에 POST로 요청을 하면서
+      // search_text 변수에 title 변수에 담긴 값을 담아서 전달하고
       url: `${rootPath}/naver/search`,
       method: "POST",
+      beforeSend: function (ax) {
+        ax.setRequestHeader(`${csrf_header}`, `${csrf_token}`);
+      },
       data: {
         search_text: title,
       },
@@ -86,6 +96,9 @@ $(function () {
     $.ajax({
       url: `${rootPath}/api/isbn`,
       method: "POST",
+      beforeSend: function (ax) {
+        ax.setRequestHeader(`${csrf_header}`, `${csrf_token}`);
+      },
       data: {
         search_text: isbn,
       },

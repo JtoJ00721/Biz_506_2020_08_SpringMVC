@@ -3,7 +3,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet" href="${rootPath}/static/css/book-write.css?ver=1">
+<link rel="stylesheet" href="${rootPath}/static/css/book-write.css?ver=0">
+<script>
+// 컨트롤러에서 보내준 _csrf.headerName과 _csrf.token값을 JS 파일로 젅달하기 위해서
+// 스크립트 변수를 선언하고
+// book-write.js에서 ajax POST 전송전에 값을 header에 실어서 보낸다.
+// js 파일에서는 csrf_header변수와 csrf_token변수를 백팃으로 묶어서 사용한다.
+	var csrf_header = '${_csrf.headerName}'
+	var csrf_token = '${_csrf.token}'
+</script>
 <script src="${rootPath}/static/js/book-write.js?ver=1"></script>
 
 <h3>도서정보 등록</h3>
