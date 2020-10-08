@@ -6,18 +6,34 @@
 <mapper namespace="com.biz.book.mapper.AuthorityDao">
 
 	<select id="selectAll" resultType="Authority">
-		SELECT * FROM tbl_authority
+		SELECT seq, m_userid AS
+		username, m_role AS authority FROM tbl_authority
 	</select>
 
 	<select id="findById" resultType="Authority">
-		SELECT * FROM tbl_member WHERE seq
+		SELECT seq, m_userid AS
+		username, m_role AS authority FROM tbl_authority WHERE
+		seq
 		= #{seq}
 	</select>
 
 	<insert id="insert">
-
+		INSERT INTO tbl_authority (SEQ, m_userid, m_role)
+		VALUES (SEQ_AUTHORITY.NEXTVAL,
+		#{username}, #{authority})
 
 	</insert>
+
+	<insert id="insertAll_1" parameterType="Authority">
+		INSERT
+		<foreach collection="list" item="vo" open="INSERT ALL"
+			close="SELECT * FROM DUAL" separator=" ">
+			INTO tbl_authority (SEQ,
+			m_userid, m_role) VALUES (SEQ_AUTHORITY.NEXTVAL,
+			#{username}, #{authority})
+		</foreach>
+	</insert>
+
 	<update id="update"></update>
 	<delete id="delete"></delete>
 

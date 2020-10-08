@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.biz.book.mapper.AuthorityDao;
 import com.biz.book.mapper.UserDao;
@@ -41,6 +42,7 @@ public class MemberServiceImplV1 implements MemberService {
 	 * 
 	 * 사용자의 ROLE 정보를 생성하여 AuthorityVO에 담고 저장하기
 	 */
+	@Transactional
 	public int insert(UserDetailsVO userVO) {
 
 		String password = userVO.getPassword();
@@ -62,7 +64,7 @@ public class MemberServiceImplV1 implements MemberService {
 		int nCount = userDao.userCount();
 
 		// 1. 회원가입한 모든 사용자에게 기본값으로 ROLL_USER 권한을 부여하고
-		AuthorityVO authVO = AuthorityVO.builder().m_userid(userVO.getM_name()).m_role("ROLL_USER").build();
+		AuthorityVO authVO = AuthorityVO.builder().username(userVO.getM_name()).authority("ROLL_USER").build();
 		authList.add(authVO);
 
 		if (nCount > 0) {
@@ -73,19 +75,32 @@ public class MemberServiceImplV1 implements MemberService {
 			// 2. 최초에 저장되는 회원은 ROLL_ADMIN, ROLL_USER 권한을 추가 부여하여
 			// 다른 사용자의 정보를 확인, 수정할수 있도록 하고
 			// 관리자 페이지를 몰수 있도록 하자.
-			authVO = AuthorityVO.builder().m_userid(userVO.getM_name()).m_role("ROLL_ADMIN").build();
+			authVO = AuthorityVO.builder().username(userVO.getM_name()).authority("ROLL_ADMIN").build();
 			authList.add(authVO);
 
-			authVO = AuthorityVO.builder().m_userid(userVO.getM_name()).m_role("ROLL_USER").build();
-			authList.add(authVO);
 		}
 		
+		// List에 담겨있는 값을 DB insert 할때
+		// 가장 쉽게할수 있는 방법이 List를 for 반복문으로 감싸고
+		// vo 한개씩을 insert 에 보내는 방법
+		// 트랜드에 뒤쳐지는 방법이다
+		// 비 효울적이고 JDBC를 반복되는 만큼 여러번 열었다 닫았다 하기 때문에
+		// 처리도 느리다
 		for(AuthorityVO vo : authList) {
 			authDao.insert(vo);
 		}
 
 		// 평문으로 입력된 비밀번호를 암호화된 비밀번호로 대치
 		userVO.setPassword(encPassword);
+		
+		// userDao의 insert가 수행되기 전에 authDao.insert가 수행되어서 insert 될것이고
+		// userDao insert에 문법오류가 나도록 했기 때문에
+		// sql 실행이 중단 될것이다
+		// authDao에는 insert가 되고 userDao는 insert가 안되는 상황이 되었다.
+		
+		// 이 상황에서 정상적으로 @Transaction이 작동된다면
+		// authDao insert가 취소되어야 한다.
+		
 		userDao.insert(userVO);
 		return 0;
 	}
