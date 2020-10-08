@@ -9,7 +9,21 @@
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>보유도서 리스트</title>
 <link rel="stylesheet" href="${rootPath}/static/css/book-list.css?ver=0">
-<script src="${rootPath}/static/js/book-list.js?ver=0"></script>
+<script>
+$(function () {
+	  $("tr.book-item").click(function () {
+	    let seq = $(this).data("seq");
+	    // js는 괜찮은데 jsp에서는 백팃 쓰지마라
+
+	    // query String 방식
+	    // document.location.href = "${rootPath}/books/detail?seq=${seq}"
+
+	    // path Varriable 방식
+	    document.location.href = "${rootPath}/books/detail/" + seq;
+	  });
+	});
+
+</script>
 </head>
 <body>
 	<h3>보유도서 리스트</h3>
@@ -35,7 +49,7 @@
 			</c:when>
 			<c:otherwise>
 				<c:forEach items="${BOOKS}" var="book" varStatus="i">
-					<tr>
+					<tr class="book-item" data-seq="${book.seq}">
 						<td>${i.count}</td>
 						<td class="book-title" data-seq="${book.seq}">${book.title}</td>
 						<td>${book.author}</td>
