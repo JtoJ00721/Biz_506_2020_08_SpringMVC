@@ -16,6 +16,13 @@
 	<context:component-scan
 		base-package="com.biz.book.service.auth" />
 
+	<!-- 권한검사를 할때 prefix 설정하는 클래스 bean -->
+	<!-- 이 클래스르르 bean 설정하면 constructor-arg value="" : prifix 제거하는 효과 -->
+	<!-- sequrity 버전마다 조금씩 차이가 있어서 설정값이 적용이 안되는 경우가 많다 -->
+	<!-- 보통은 설정하지 않고 기본값으로 접두어를 붙여서 사용한다. : ROLE_ADMIN -->
+	<!-- <bean class="org.springframework.security.config.core.GrantedAuthorityDefaults"> 
+		<constructor-arg value="ROLE_"></constructor-arg> </bean> -->
+
 	<!-- spring security에서 사용할 AuthenticationProvider를 구현한 -->
 	<!-- 클래스를 bean 등록 -->
 	<bean id="customAuthProvider"
@@ -58,19 +65,21 @@
 			logout-success-url="/" invalidate-session="true" />
 
 		<security:intercept-url pattern="/admin/**"
-			access="hasRole('ADMIN')" />
+			access="hasRole('ROLE_ADMIN')" />
 
 		<security:intercept-url
-			pattern="/member/mypage" access="hasAnyRole('ADMIN','USER')" />
+			pattern="/member/mypage"
+			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 
 		<security:intercept-url
-			pattern="/member/password" access="hasAnyRole('ADMIN','USER')" />
+			pattern="/member/password"
+			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 
 		<security:intercept-url pattern="/member/**"
 			access="permitAll()" />
 
 		<security:intercept-url pattern="/books/**"
-			access="hasAnyRole('ADMIN','USER')" />
+			access="hasAnyRole('ROLE_ADMIN','ROLE_USER')" />
 
 		<security:intercept-url pattern="/**"
 			access="permitAll()" />

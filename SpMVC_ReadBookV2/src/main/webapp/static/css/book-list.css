@@ -1,35 +1,34 @@
 @charset "UTF-8";
 
 table#book-list {
-  border-collapse: collapse;
-  border-spacing: 0;
-  width: 90%;
-  border: 1px solid #aaa;
-  margin: 30px auto;
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 80%;
+	border: 5px dashed olive;
+	margin: 30px auto;
 }
 
-table#book-list th,
-table#book-list td {
-  border-bottom: 1px solid #ddd;
-  padding: 8px;
-  text-align: left;
-  vertical-align: top;
+table#book-list th, table#book-list td {
+	border-bottom: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+	vertical-align: top;
 }
 
 table#book-list tr {
-  transition: all 0.7s;
+	transition: all 0.7s;
 }
 
 table#book-list td {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 table#book-list tr:nth-child(even) {
-  background-color: #f1f1f1;
+	background-color: #f1f1f1;
 }
 
 table#book-list tr:nth-child(odd) {
-  background-color: #fff;
+	background-color: #fff;
 }
 
 /*
@@ -37,27 +36,38 @@ An+2 공식으로 게산되는 결과에 따라 선택된다
 어떤 같은 tag가 연속적으로 나올때 tag의 개수만큼 n : 0 ~ 개수 -1 증가 속성
 3n+2 : (0,3,6,8....) + 2
 */
-table#book-list tr:nth-child(n + 2):hover {
-  background-color: #ccc;
+table#book-list tr:nth-child(n+2):hover {
+	background-color: #ccc;
+}
+
+table#book-list tr:first-child {
+	border-bottom: 5px dotted olive;
+	background-color: coral;
+	color: white;
+	font-size: 20px;
+	font-weight: bold;
 }
 
 div#book-link-box {
-  width: 90%;
-  margin: 10px auto;
-  text-align: right;
+	width: 80%;
+	margin: 10px auto;
+	text-align: right;
 }
 
 div#book-link-box a {
-  display: inline-block;
-  padding: 10px 15px;
-  background-color: blue;
-  color: whitesmoke;
-  text-decoration: none;
-
-  border-radius: 5px;
-  transition: all 0.3s;
+	display: inline-block;
+	padding: 10px 15px;
+	background-color: brown;
+	color: whitesmoke;
+	text-decoration: none;
+	border: 3px solid transparent;
+	border-radius: 5px;
+	transition: all 0.3s;
+	border-radius: 5px;
 }
 
 div#book-link-box a:hover {
-  box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+	font-weight: bold;
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
+	box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.4);
 }

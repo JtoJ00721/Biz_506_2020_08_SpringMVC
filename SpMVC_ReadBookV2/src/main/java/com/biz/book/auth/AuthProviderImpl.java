@@ -1,8 +1,5 @@
 package com.biz.book.auth;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -10,12 +7,9 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.biz.book.model.AuthorityVO;
 import com.biz.book.model.UserDetailsVO;
 
 /*
@@ -52,7 +46,7 @@ public class AuthProviderImpl implements AuthenticationProvider {
 	@Autowired
 	@Qualifier("userDetailServiceV1")
 	private UserDetailsService userService;
-	
+
 	@Autowired
 	private PasswordEncoder passwordEncorder;
 
@@ -77,14 +71,13 @@ public class AuthProviderImpl implements AuthenticationProvider {
 //			// 비번이 일치하지 않으면
 //			throw new BadCredentialsException("비밀번호 오류");
 //		}
-		
+
 		// PasswordEncoder로 암호화된 비번 비교
 		/*
-		 * 사용자가 입력한 password 평문 문자열을 내부에서
-		 * 암호화 하여 DB에 저장되어 있는 암호화된 비번(suerVO.getPassword())을
-		 * 비교하여 일치하는지 검사한다.
+		 * 사용자가 입력한 password 평문 문자열을 내부에서 암호화 하여 DB에 저장되어 있는 암호화된
+		 * 비번(suerVO.getPassword())을 비교하여 일치하는지 검사한다.
 		 */
-		if(!passwordEncorder.matches(password, userVO.getPassword())) {
+		if (!passwordEncorder.matches(password, userVO.getPassword())) {
 			throw new BadCredentialsException("비밀번호가 일치하지 않음 ><");
 		}
 
@@ -98,20 +91,20 @@ public class AuthProviderImpl implements AuthenticationProvider {
 		// 가. 임시로 사용자의 권한 리스트를 생성하기 위하여
 		// AUthorityVO를 담은 List 를 생성하고
 		// 권한(ROLE)값을 지정하여 add()
-		List<AuthorityVO> authList = new ArrayList<AuthorityVO>();
+//		List<AuthorityVO> authList = new ArrayList<AuthorityVO>();
 //		authList.add(AuthorityVO.builder().m_role("ROLE_ADMIN").build());
-		authList.add(AuthorityVO.builder().authority("ROLE_USER").build());
+//		authList.add(AuthorityVO.builder().authority("ROLE_USER").build());
 
 		// 나. spring security의 hasRole() method에서 사용할 자료형으로 변환
-		List<GrantedAuthority> rollList = new ArrayList<>();
-
-		for (AuthorityVO auth : authList) {
-			rollList.add(new SimpleGrantedAuthority(auth.getAuthority()));
-		}
+//		List<GrantedAuthority> rollList = new ArrayList<>();
+//
+//		for (AuthorityVO auth : authList) {
+//			rollList.add(new SimpleGrantedAuthority(auth.getAuthority()));
+//		}
 
 		// 로그인한 사용자에게 인증 token을 발행
 		// 사용자의 detail 정보와 roll정보를 token에 같이 심어 놓는다.
-		return new UsernamePasswordAuthenticationToken(userVO, null, rollList);
+		return new UsernamePasswordAuthenticationToken(userVO, null, userVO.getAuthorities());
 	}
 
 	@Override

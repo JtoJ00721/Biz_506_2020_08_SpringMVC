@@ -23,7 +23,8 @@
 		m_address,
 		m_email,
 		enabled
-		FROM tbl_member WHERE
+		FROM
+		tbl_member WHERE
 		m_userid
 		= #{username}
 	</select>
@@ -59,10 +60,12 @@
 	<update id="update">
 		UPDATE tbl_member
 		SET m_name = #{m_name},
-			m_tel = #{m_tel},
-			m_address = #{m_address},
-			m_email = #{m_email}
-		WHERE m_userid = #{username}
+		m_tel =
+		#{m_tel},
+		m_address = #{m_address},
+		m_email = #{m_email}
+		WHERE m_userid =
+		#{username}
 	</update>
 	<delete id="delete"></delete>
 
