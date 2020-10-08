@@ -99,7 +99,7 @@ public class AuthProviderImpl implements AuthenticationProvider {
 		// AUthorityVO를 담은 List 를 생성하고
 		// 권한(ROLE)값을 지정하여 add()
 		List<AuthorityVO> authList = new ArrayList<AuthorityVO>();
-		authList.add(AuthorityVO.builder().m_role("ROLE_ADMIN").build());
+//		authList.add(AuthorityVO.builder().m_role("ROLE_ADMIN").build());
 		authList.add(AuthorityVO.builder().m_role("ROLE_USER").build());
 
 		// 나. spring security의 hasRole() method에서 사용할 자료형으로 변환

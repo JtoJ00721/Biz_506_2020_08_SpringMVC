@@ -1,7 +1,11 @@
 package com.biz.book.controller;
 
-import org.springframework.security.authentication.AuthenticationProvider;
+import java.security.Principal;
+
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -14,7 +18,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.biz.book.model.UserDetailsVO;
 import com.biz.book.service.MemberService;
 
-import ch.qos.logback.core.status.Status;
 import lombok.RequiredArgsConstructor;
 
 /*
@@ -36,8 +39,7 @@ public class MemberController {
 	private final MemberService memberService;
 
 	/*
-	 * @SessionAttributes(memberVO) 를 사용하려면
-	 * 반드시 memberVO를 생성하는 method가 클래스에 있어야 한다.
+	 * @SessionAttributes(memberVO) 를 사용하려면 반드시 memberVO를 생성하는 method가 클래스에 있어야 한다.
 	 * UserSetailsVO 클래스로 생성된 memberVO가 "memberVO" 이름으로 보관된다.
 	 * 
 	 * @SessionAttributes() 가 있는데 @ModelAttribute() 가 붙은 method가 없으면 컴파일 오류가 난다.
@@ -100,7 +102,12 @@ public class MemberController {
 	@RequestMapping(value = "/mypage", method = RequestMethod.GET)
 	public String mypage(@ModelAttribute("memberVO") UserDetailsVO userVO, Authentication authProvider, Model model) {
 
-		// 현재 로그인한 사용자의 정보를 추출하는 method
+		/*
+		 * 현재 로그인한 사용자의 정보를 추출하는 method spring security를 통과하여 login이 인가된 사용자의 정보는 현재
+		 * method가 호출될때 spring security의 Filter Chain에 의해서 method의 매개변수로 설정된
+		 * Authentication 클래스로 선언된 객체에 담겨서 전달이 된다. 객체서 GetPrincipal() method를 호출하여 데이터를
+		 * UserDetailsVO의 userVO객체에 담아서 일반 userVO(memberVO) 처럼 취급을
+		 */
 		userVO = (UserDetailsVO) authProvider.getPrincipal();
 		userVO.setPassword("");
 
@@ -153,6 +160,35 @@ public class MemberController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout() {
 		return "member/logout";
+	}
+
+	@ResponseBody
+	@RequestMapping(value = "/user_info", method = RequestMethod.GET)
+	public UserDetailsVO userInfo(Authentication authentication, Principal principal,
+			@ModelAttribute("memberVO") @AuthenticationPrincipal UserDetailsVO userVO, Model model) {
+
+		// spring security 프로젝트에서 로그인한 사용자 정보를 추출하는 여러가지 방법
+		// 1. UserDetailsServiceImplV1에서 공급받는 방법
+		// 서버의 Session memory에 직접 접근하여 사용자 정보를 추출하는 방법으로
+		// 보안에 상당히 취약해서 사용을 지향하는 방법
+//		UsernamePasswordAuthenticationToken upa = (UsernamePasswordAuthenticationToken) principal;
+//		
+//		userVO = (UserDetailsVO) upa.getPrincipal();
+//		
+		// 2. SecurityContextHolder로부터 추출하는 방법
+//		userVO = (UserDetailsVO) SecurityContextHolder
+//				.getContext()
+//				.getAuthentication()
+//				.getPrincipal();
+
+		// 3. Authentication 클래스를 매개변수로 설정하는 방법
+		// @AuthenticationPrincipal 이 작동이 안되는 관계로
+		// 매개변수에 Authentication 클래스를 객체로 선언하고
+		// authentication.getPrincipal() method를 호출하여 userVO를 추출하는 방법
+		userVO = (UserDetailsVO) authentication.getPrincipal();
+
+		return userVO;
+
 	}
 
 }

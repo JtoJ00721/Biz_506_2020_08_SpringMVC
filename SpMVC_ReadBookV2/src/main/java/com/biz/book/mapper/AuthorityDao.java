@@ -1,5 +1,5 @@
 package com.biz.book.mapper;
 
-import com.biz.book.model.UserDetailsVO;
+import com.biz.book.model.AuthorityVO;
 
-public interface AuthorityDao extends GenericaDao<UserDetailsVO, Long>{}
+public interface AuthorityDao extends GenericaDao<AuthorityVO, Long>{}
