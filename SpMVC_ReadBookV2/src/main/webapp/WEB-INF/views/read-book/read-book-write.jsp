@@ -21,13 +21,28 @@ form#read-book-write input, form#read-book-write button {
 form#read-book-write input[name='r_comment'] {
 	flex: 5;
 }
-
 </style>
 
-<form:form id="read-book-write" modelAttribute="readBookVO">
-	<form:input path="r_date" placeholder="읽은 날짜" />
+<form:form id="read-book-write" action="${rootPath}/read/write" modelAttribute="readBookVO">
+<form:input path="r_book_seq" type="hidden" value="${BOOKVO.seq}"/>
+	<form:input path="r_date" type="date" placeholder="읽은 날짜" />
 	<form:input path="r_stime" placeholder="읽기 시작 시간" />
 	<form:input path="r_etime" placeholder="읽기 마침 시간" />
 	<form:input path="r_comment" placeholder="읽은 소감" />
 	<button>저장</button>
 </form:form>
+
+<table>
+	<tr>
+		<th>읽은날짜</th>
+		<th>시작</th>
+		<th>종료</th>
+	</tr>
+	<c:forEach items="${READ_BOOK}" var="vo">
+		<tr>
+			<td>${vo.r_date}</td>
+			<td>${vo.r_stime}</td>
+			<td>${vo.r_etime}</td>
+		</tr>
+	</c:forEach>
+</table>

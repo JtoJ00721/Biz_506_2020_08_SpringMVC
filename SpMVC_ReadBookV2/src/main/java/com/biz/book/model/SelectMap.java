@@ -12,7 +12,6 @@ public class SelectMap {
 	public static final Map<String, String> CAT_MAP;
 	public static final Map<String, String> FLAG_MAP;
 
-	
 	// static final 로 선언된 CAT_MAP을 초기화 시키는 코드 각각 항목에 item을 추가하기
 	static {
 		Map<String, String> tempMap = new HashMap<String, String>();
