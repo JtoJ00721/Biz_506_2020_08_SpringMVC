@@ -8,68 +8,31 @@
 	<select id="selectAll" resultType="ReadBook">
 		SELECT * FROM tbl_readbooks
 	</select>
-	
+
 
 	<insert id="insert" parameterType="ReadBook">
-		INSERT INTO tbl_readbook(
-		seq,
-		title,
-		link,
-		image,
-		author,
-		price,
-		discount,
-		publisher,
-		isbn,
-		description,
-		pubdate,
-		buydate,
-		buyprice,
-		buystore
+		INSERT INTO tbl_readbook (
+
+		r_seq,
+		r_book_seq,
+		r_date,
+		r_stime,
+		r_etime,
+		r_comment
 
 		) VALUES (
 
-		SEQ_BOOKS.NEXTVAL,
-		#{title},
-		#{link},
-		#{image},
-		#{author},
-		#{price},
-		#{discount},
-		#{publisher},
-		#{isbn},
-		#{description},
-		#{pubdate},
-		#{buydate},
-		#{buyprice},
-		#{buystore}
+		seq_readbook.NEXTVAL,
+		#{r_book_seq},
+		#{r_date},
+		#{r_stime},
+		#{r_etime},
+		#{r_comment}
 		)
-
 	</insert>
+
+
 	<update id="update" parameterType="ReadBook">
-		UPDATE tbl_books SET
-
-		title = #{title},
-		link = #{link},
-		image = #{image},
-		author = #{author},
-		price =
-		#{price},
-		discount = #{discount},
-		publisher = #{publisher},
-		isbn =
-		#{isbn},
-		description = #{description},
-		pubdate = #{pubdate},
-		buydate =
-		#{buydate},
-		buyprice = #{buyprice},
-		buystore = #{buystore}
-		WHERE
-		seq =
-		#{seq}
-
-
 	</update>
 
 </mapper> 
