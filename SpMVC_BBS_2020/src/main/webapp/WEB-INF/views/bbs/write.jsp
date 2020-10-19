@@ -68,14 +68,24 @@ button#save {
 </style>
 <script>
 	$(function() {
-		$("#b_content").summernote({ lang:"ko-KR",width:"80%",height:"200px",toolbar : [
-		['style',['style']]	
+		var toolbar = [
+			['style',['bold','italic','underline'] ],
+			['fontsize',['fontsize']],
+			['font Style',['fontname']],
+			['color',['color']],
+			['para',['ul','ol','paragraph']],
+			['height',['height']],
+			['table',['table']],
+			['insert',['link','hr','picture']],
+			['view',['fullscreen','codeview']]
 			
 		]
+		
+		$("#b_content").summernote({ lang:"ko-KR",width:"80%",height:"200px",toolbar : toolbar
 		});
 	})
 </script>
-<form id="write-form">
+<form id="write-form" method="POST">
 	<fieldset>
 		<legend>글쓰기</legend>
 		<div>
@@ -92,11 +102,11 @@ button#save {
 		</div>
 		<div>
 			<label></label>
-			<textarea id="b_content" rows="5" cols="20"></textarea>
+			<textarea id="b_content" rows="5" cols="20" name="b_content"></textarea>
 		</div>
 		<div class="button-box">
 			<button type="button" id="list">리스트로</button>
-			<button type="button" id="save">저장</button>
+			<button type="submit" id="save">저장</button>
 		</div>
 	</fieldset>
 </form>
