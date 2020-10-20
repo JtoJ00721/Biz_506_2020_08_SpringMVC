@@ -39,12 +39,12 @@ public class BbsController {
 		
 		model.addAttribute("BBS_LIST", bbsList);
 		
-		return "bbs/list";
+		return "/bbs/list";
 	}
 
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write() {
-		return "bbs/write";
+		return "/bbs/write";
 	}
 	
 	@RequestMapping(value = "/write", method=RequestMethod.POST)
@@ -56,7 +56,7 @@ public class BbsController {
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String detail() {
-		return "bbs/detail";
+		return "/bbs/detail";
 	}
 
 }
