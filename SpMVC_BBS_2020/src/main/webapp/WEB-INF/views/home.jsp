@@ -10,5 +10,8 @@
 </head>
 <body>
 <h1>호옹이!!!</h1>
+
+<img src="${rootPath}/upload/korea.jpg">
+
 </body>
 </html>

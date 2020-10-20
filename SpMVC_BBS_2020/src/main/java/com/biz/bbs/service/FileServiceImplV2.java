@@ -24,17 +24,22 @@ public class FileServiceImplV2 extends FileServiceImplV1 {
 	public String fileUp(MultipartFile file) {
 
 		// 이 프로젝트에서 static으로 선언된 folder에 files라는 폴더 정보를 가져와라
-		Resource resource = resourceLoader.getResource("/files");
+		Resource resource = resourceLoader.getResource("/static/files");
 
 		try {
 			String fileSaveFolder = resource.getURI().getPath();
+
+			File dir = new File(fileSaveFolder);
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+
 			String fileName = file.getOriginalFilename();
 
 			File serverSaveFile = new File(fileSaveFolder, fileName);
 			file.transferTo(serverSaveFile);
-			
+
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

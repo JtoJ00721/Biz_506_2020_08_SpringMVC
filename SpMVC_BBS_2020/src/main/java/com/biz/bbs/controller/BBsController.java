@@ -2,9 +2,11 @@ package com.biz.bbs.controller;
 
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,20 +16,20 @@ import com.biz.bbs.model.BBsVO;
 import com.biz.bbs.service.BBsService;
 import com.biz.bbs.service.FileService;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/bbs")
 public class BBsController {
 	
+	@Autowired
 	@Qualifier("bbsServiceV1")
-	private final BBsService bbsService;
+	private BBsService bbsService;
 	
-	@Qualifier("fileServiceV2")
-	private final FileService fileService;
+	@Autowired
+	@Qualifier("fileServiceV4")
+	private FileService fileService;
 	
 	/*
 	 * return문에 bbs/list 문자열이 있으면
@@ -65,14 +67,23 @@ public class BBsController {
 	public String write(BBsVO bbsVO, @RequestParam("file") MultipartFile file) {
 		
 		log.debug("업로드한 파일 이름 >< : " + file.getOriginalFilename());
-		fileService.fileUp(file);
 		
-		//bbsService.insert(bbsVO);
+		String fileName = fileService.fileUp(file);
+		bbsVO.setB_file(fileName);
+		bbsService.insert(bbsVO);
+		
 		return "redirect:/bbs/list";
 	}
 	
-	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String detail() {
+	
+	@RequestMapping(value = "/detail/{seq}", method = RequestMethod.GET)
+	public String detail(@PathVariable("seq") String seq, Model model) {
+
+		long long_seq = Long.valueOf(seq);
+		BBsVO bbsVO = bbsService.findBySeq(long_seq);
+		
+		model.addAttribute("BBSVO", bbsVO);
+
 		return "/bbs/detail";
 	}
 
