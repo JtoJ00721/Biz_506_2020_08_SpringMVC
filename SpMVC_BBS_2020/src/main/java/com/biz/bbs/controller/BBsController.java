@@ -7,19 +7,27 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.biz.bbs.model.BBsVO;
 import com.biz.bbs.service.BBsService;
+import com.biz.bbs.service.FileService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 @Controller
 @RequestMapping(value = "/bbs")
-public class BbsController {
+public class BBsController {
 	
 	@Qualifier("bbsServiceV1")
 	private final BBsService bbsService;
+	
+	@Qualifier("fileServiceV2")
+	private final FileService fileService;
 	
 	/*
 	 * return문에 bbs/list 문자열이 있으면
@@ -47,10 +55,19 @@ public class BbsController {
 		return "/bbs/write";
 	}
 	
+	/*
+	 * form에서 보낸 파일 받기
+	 * MultipartFile 클래스를 매개변수로 설정하여 파일을 받기
+	 * 이 클래스에 @RequestParam(이름) : 이름 = form에서 input type=file로 설정된
+	 * 		tag의 name값
+	 */
 	@RequestMapping(value = "/write", method=RequestMethod.POST)
-	public String write(BBsVO bbsVO) {
+	public String write(BBsVO bbsVO, @RequestParam("file") MultipartFile file) {
 		
-		bbsService.insert(bbsVO);
+		log.debug("업로드한 파일 이름 >< : " + file.getOriginalFilename());
+		fileService.fileUp(file);
+		
+		//bbsService.insert(bbsVO);
 		return "redirect:/bbs/list";
 	}
 	
