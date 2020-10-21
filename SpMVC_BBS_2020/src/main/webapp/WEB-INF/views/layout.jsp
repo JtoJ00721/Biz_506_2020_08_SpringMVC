@@ -40,7 +40,7 @@ body {
 }
 
 header {
-	background-color: green;
+	background-color: cornflowerblue;
 	color: white;
 	padding: 1.2rem;
 	text-align: center;
@@ -49,7 +49,7 @@ header {
 nav ul {
 	list-style: none;
 	display: flex;
-	background-color: blue;
+	background-color: coral;
 	color: white;
 }
 
@@ -61,13 +61,14 @@ nav ul li {
 	transition: all 0.7s;
 	cursor: pointer;
 	transition: all 0.7s;
-	font-weight: bold;
 	transition: all 0.7s;
+	border: 7px solid transparent;
 }
 
 nav ul li:hover {
-	background-color: #ddd;
-	color: black;
+	background-color: olive;
+	font-weight: bolder;
+	border: 7px dashed olive;
 }
 
 /*

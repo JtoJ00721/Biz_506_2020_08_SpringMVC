@@ -2,57 +2,52 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}" />
-
 <style>
-* {
-	box-sizing: border-box;
-	margin: 0;
-	padding: 0;
-}
-
-html, body {
-	height: 100%;
-	width: 100%;
-}
-
-#detail-main {
-	width: 90%;
-	display: flex;
-	margin: 20px auto;
-	justify-content: center;
-}
-
-#detail_interface {
-	margin: 10px;
+section#bbs-detail-header {
 	width: 50%;
-	height: 50%;
-	border: 30px double gray;
-	padding: 15px;
+	border: 1px solid blue;
+	margin: 20px auto;
+	display: flex;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5)
 }
 
-#detail_interface h3, #detail_interface p {
+section#bbs-detail-header article:first-child {
+	flex: 1;
+}
+
+section#bbs-detail-header article:last-child {
+	flex: 2;
+}
+
+section#bbs-detail-header div {
+	margin: 5px;
+	padding: 10px;
+	border-bottom: 1px solid #ddd
+}
+
+section#bbs-detail-header .title {
 	display: inline-block;
-	padding: 8px;
-	margin: 8px 4px;
-	border-bottom: 2px solid gray;
-}
-
-#detail_interface h3 {
-	width: 30%;
-	color: green;
+	width: 25%;
+	background-color: #ddd;
 	font-weight: bold;
-	text-align: center;
-	border-bottom: none;
+	text-align: right;
 }
 
-#detail_interface p {
+section#bbs-detail-header .content {
+	display: inline-block;
 	width: 60%;
 }
 
-hr {
-	width: 90%;
-	border: 3px solid #ddd;
-	margin: 0 auto;
+section#bbs-detail-header img {
+	margin: 5px;
+	border-radius: 5px;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5)
+}
+
+section#bbs-detail-body {
+	width: 50%;
+	margin: 10px auto;
+	box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5)
 }
 
 #detail-menu {
@@ -87,18 +82,20 @@ hr {
 	color: black;
 }
 </style>
-
-<section id="detail-main">
-	<article id="detail-img">
+<section id="bbs-detail-header">
+	<article>
 		<img src="${rootPath}/upload/${BBSVO.b_file}" width="200px">
 	</article>
-	<article id="detail_interface">
-		<div>${BBSVO.b_subject}</div>
-		<div>${BBSVO.b_date}</div>
-		<div>${BBSVO.b_writer}</div>
+	<article>
+		<div class="title">제목</div>
+		<div class="content">${BBSVO.b_subject}</div>
+		<div class="title">작성일시</div>
+		<div class="content">${BBSVO.b_date},${BBSVO.b_time}</div>
+		<div class="title">작성자</div>
+		<div class="content">${BBSVO.b_writer}</div>
 	</article>
 </section>
-<section id="detail-content">${BBS.b_content}</section>
+<section id="bbs-detail-body">${BBSVO.b_content}</section>
 
 <section id="detail-menu">
 	<a href="${rootPath}/bbs/list">리스트로</a> <a
