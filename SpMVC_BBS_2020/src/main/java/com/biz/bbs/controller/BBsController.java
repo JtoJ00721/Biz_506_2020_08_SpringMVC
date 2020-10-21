@@ -27,10 +27,6 @@ public class BBsController {
 	@Qualifier("bbsServiceV1")
 	private BBsService bbsService;
 	
-	@Autowired
-	@Qualifier("fileServiceV4")
-	private FileService fileService;
-	
 	/*
 	 * return문에 bbs/list 문자열이 있으면
 	 * 1. titles-layout.xml에서 bbs/list로 설정된 항목을 검사
@@ -51,7 +47,7 @@ public class BBsController {
 		
 		return "/bbs/list";
 	}
-
+	
 	@RequestMapping(value = "/write", method = RequestMethod.GET)
 	public String write() {
 		return "/bbs/write";
@@ -68,9 +64,7 @@ public class BBsController {
 		
 		log.debug("업로드한 파일 이름 >< : " + file.getOriginalFilename());
 		
-		String fileName = fileService.fileUp(file);
-		bbsVO.setB_file(fileName);
-		bbsService.insert(bbsVO);
+		bbsService.insert(bbsVO,file);
 		
 		return "redirect:/bbs/list";
 	}
@@ -85,6 +79,35 @@ public class BBsController {
 		model.addAttribute("BBSVO", bbsVO);
 
 		return "/bbs/detail";
+	}
+	
+	@RequestMapping(value = "/{seq}/delete", method= RequestMethod.GET)
+	public String delete(@PathVariable("seq") String seq) {
+		
+		long long_seq = Long.valueOf(seq);
+		
+		bbsService.delete(long_seq);
+		
+		return "redirect:/bbs/list";
+	}
+	
+	@RequestMapping(value = "/{seq}/{url}", method= RequestMethod.GET)
+	public String update(@PathVariable("seq") String seq, @PathVariable("url") String url, Model model) {
+		
+		long long_seq = Long.valueOf(seq);
+		
+		String ret_url = "redirect:/bbs/list";
+		
+		if(url.equalsIgnoreCase("DELETE")) {
+			//bbsService.delete(long_seq);
+		} else if(url.equalsIgnoreCase("UPDATE")) {
+			model.addAttribute("BBSVO",bbsService.findBySeq(long_seq));
+			ret_url = "/bbs/write";
+		}
+		
+		model.addAttribute("BBSVO", bbsService.findBySeq(long_seq));
+		
+		return ret_url;
 	}
 
 }

@@ -55,36 +55,53 @@ section#bbs-detail-body {
 	text-align: center;
 }
 
-#detail-menu a {
-	display: inline-block;
-	padding: 8px 16px;
-	margin: 8px 4px;
-	text-decoration: none;
-	background-color: navy;
-	border: 3px solid black;
-	border-radius: 5px;
-	color: white;
-	transition: all 0.7s;
-}
-
 #detail-menu a:first-child {
-	background-color: crimson;
+	
 }
 
 #detail-menu a:nth-child(2) {
+}
+
+#bbs-button-box {
+	width: 50%;
+	margin: 10px auto;
+	text-align: right;
+}
+
+#bbs-button-box button {
+	background-color: crimson;
+	margin: 10px;
+	padding: 10px 16px;
+	border: 3px solid black;
+	outline: none;
+	border-radius: 5px;
+	color: white;
+	font-weight: bolder;
+	transition: all 0.7s;
+	margin: 10px;
+}
+
+#bbs-button-box button:nth-child(2) {
 	background-color: yellowgreen;
 }
 
-#detail-menu a:hover {
+#bbs-button-box button:nth-child(3) {
+	background-color: navy;
+}
+
+#bbs-button-box button:hover {
+	box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
 	background-color: gray;
 	border: 3px dotted coral;
-	font-weight: bold;
 	color: black;
 }
+
+
 </style>
 <section id="bbs-detail-header">
 	<article>
-		<img src="${rootPath}/upload/${BBSVO.b_file}" width="200px">
+		<a href="${rootPath}/upload/${BBSVO.b_file}" target=_new><img
+			src="${rootPath}/upload/${BBSVO.b_file}" width="200px"></a>
 	</article>
 	<article>
 		<div class="title">제목</div>
@@ -97,13 +114,36 @@ section#bbs-detail-body {
 </section>
 <section id="bbs-detail-body">${BBSVO.b_content}</section>
 
-<section id="detail-menu">
-	<a href="${rootPath}/bbs/list">리스트로</a> <a
-		href="${rootPath}/bbs/update?id=${vo.b_seq}">수정</a> <a
-		href="javascript:void(0)" id="list-delete" data-id="${vo.b_seq}">삭제</a>
+<section id="bbs-button-box">
+	<button class="list">리스트로</button>
+	<button class="update">수정</button>
+	<button class="delete">삭제</button>
 </section>
 
 <script>
+	//------------------------------- 신형 -------------------------------------
+	document.addEventListener("DOMContentLoaded", function() {
+		document.querySelector("section#bbs-button-box").addEventListener(
+				"click", function(e) {
+					let url = "${rootPath}/bbs/${BBSVO.b_seq}/"
+					if (e.target.tagName === ("BUTTON")) {
+
+						if (e.target.className == "delete") {
+							if (!confirm("정말 삭제? ><")) {
+								alert("이것은 귀중한 수박")
+								return false;
+							} else {
+								alert("날려버렸지롱 ><")
+							}
+						}
+
+						document.location.href = url + e.target.className
+					}
+				})
+	})
+
+	//------------------------------- 구형 -------------------------------------
+
 	document.addEventListener("DOMContentLoaded", function() {
 		document.querySelector("#list-delete").addEventListener(
 				"click",

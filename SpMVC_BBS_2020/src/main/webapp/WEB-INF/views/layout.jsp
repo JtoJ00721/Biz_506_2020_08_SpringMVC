@@ -68,7 +68,7 @@ nav ul li {
 nav ul li:hover {
 	background-color: olive;
 	font-weight: bolder;
-	border: 7px dashed olive;
+	border: 7px double crimson;
 }
 
 /*
