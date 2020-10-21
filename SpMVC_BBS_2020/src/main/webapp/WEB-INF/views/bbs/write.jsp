@@ -68,20 +68,21 @@ button#save {
 </style>
 <script>
 	$(function() {
-		var toolbar = [
-			['style',['bold','italic','underline'] ],
-			['fontsize',['fontsize']],
-			['font Style',['fontname']],
-			['color',['color']],
-			['para',['ul','ol','paragraph']],
-			['height',['height']],
-			['table',['table']],
-			['insert',['link','hr','picture']],
-			['view',['fullscreen','codeview']]
-			
+		var toolbar = [ [ 'style', [ 'bold', 'italic', 'underline' ] ],
+				[ 'fontsize', [ 'fontsize' ] ],
+				[ 'font Style', [ 'fontname' ] ], [ 'color', [ 'color' ] ],
+				[ 'para', [ 'ul', 'ol', 'paragraph' ] ],
+				[ 'height', [ 'height' ] ], [ 'table', [ 'table' ] ],
+				[ 'insert', [ 'link', 'hr', 'picture' ] ],
+				[ 'view', [ 'fullscreen', 'codeview' ] ]
+
 		]
-		
-		$("#b_content").summernote({ lang:"ko-KR",width:"80%",height:"200px",toolbar : toolbar
+
+		$("#b_content").summernote({
+			lang : "ko-KR",
+			width : "80%",
+			height : "200px",
+			toolbar : toolbar
 		});
 	})
 </script>
@@ -108,7 +109,7 @@ button#save {
 			<label>이미지</label> <input type="file" name="file" accept="image/*">
 		</div>
 		<div class="button-box">
-			<button type="button" id="list">리스트로</button>
+			<a href="${rootPath}/bbs/list"><button type="button" id="list">리스트로</button></a>
 			<button type="submit" id="save">저장</button>
 		</div>
 	</fieldset>

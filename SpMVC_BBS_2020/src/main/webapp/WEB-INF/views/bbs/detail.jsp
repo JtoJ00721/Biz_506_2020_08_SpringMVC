@@ -60,6 +60,7 @@ section#bbs-detail-body {
 }
 
 #detail-menu a:nth-child(2) {
+	
 }
 
 #bbs-button-box {
@@ -95,8 +96,6 @@ section#bbs-detail-body {
 	border: 3px dotted coral;
 	color: black;
 }
-
-
 </style>
 <section id="bbs-detail-header">
 	<article>
@@ -121,7 +120,6 @@ section#bbs-detail-body {
 </section>
 
 <script>
-	//------------------------------- 신형 -------------------------------------
 	document.addEventListener("DOMContentLoaded", function() {
 		document.querySelector("section#bbs-button-box").addEventListener(
 				"click", function(e) {
@@ -129,11 +127,31 @@ section#bbs-detail-body {
 					if (e.target.tagName === ("BUTTON")) {
 
 						if (e.target.className == "delete") {
-							if (!confirm("정말 삭제? ><")) {
-								alert("역시 이것은 귀중한 수박")
+
+							/*
+							게시글 삭제를 요청하면 (삭제버튼을 클릭하면)
+							ajax를 사용하여 서버에 DELETE method type으로 삭제를 요청하자
+							 */
+							if (confirm("정말 삭제? ><")) {
+
+								let data = {
+									seq : "${BBSVO.b_seq}"
+								}
+
+								fetch("${rootPath}/api/bbs", {
+									method : "DELETE",
+									headers : {
+										"Content-type" : "application/json"
+									},
+									// JSON 객체데이터를 문자열화 하여 HTTP Body에 담기
+									body : JSON.stringify(data)
+								}).then(function (result) {
+								alert("허접하징? 날려버렸지롱 ><")
+								}).catch(function (error) {
+									alert("에엫따..! 안지워진다!!! ><")
+								})
 								return false;
 							} else {
-								alert("다시 봐도 허접하지? 날려버렸지롱 ><")
 							}
 						}
 
@@ -141,19 +159,4 @@ section#bbs-detail-body {
 					}
 				})
 	})
-
-	//------------------------------- 구형 -------------------------------------
-
-	document.addEventListener("DOMContentLoaded", function() {
-		document.querySelector("#list-delete").addEventListener(
-				"click",
-				function() {
-					let id = document.querySelector("#list-delete")
-							.getAttribute("data-id");
-					if (confirm("정말 삭제? ><")) {
-						document.location.replace(`${rootPath}/bbs/delete/?id=`
-								+ id);
-					}
-				});
-	});
 </script>
