@@ -130,10 +130,10 @@ section#bbs-detail-body {
 
 						if (e.target.className == "delete") {
 							if (!confirm("정말 삭제? ><")) {
-								alert("이것은 귀중한 수박")
+								alert("역시 이것은 귀중한 수박")
 								return false;
 							} else {
-								alert("날려버렸지롱 ><")
+								alert("다시 봐도 허접하지? 날려버렸지롱 ><")
 							}
 						}
 
