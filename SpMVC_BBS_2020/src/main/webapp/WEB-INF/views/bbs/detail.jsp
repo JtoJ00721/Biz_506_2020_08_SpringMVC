@@ -135,20 +135,23 @@ section#bbs-detail-body {
 							if (confirm("정말 삭제? ><")) {
 
 								let data = {
-									seq : "${BBSVO.b_seq}"
+									seq : "${BBSVO.b_seq}",
+									subject : "${BBSVO.b_subject}"
 								}
 
 								fetch("${rootPath}/api/bbs", {
-									method : "DELETE",
+									method : "PUT",
 									headers : {
 										"Content-type" : "application/json"
 									},
 									// JSON 객체데이터를 문자열화 하여 HTTP Body에 담기
-									body : JSON.stringify(data)
-								}).then(function (result) {
+									body : JSON.stringify(data) // 중요!!
+								})
+								.then(function (result) {
 								alert("허접하징? 날려버렸지롱 ><")
-								}).catch(function (error) {
-									alert("에엫따..! 안지워진다!!! ><")
+								})
+								.catch(function (error) {
+									alert("에엫따..! 안지워진다니!!! ><")
 								})
 								return false;
 							} else {
