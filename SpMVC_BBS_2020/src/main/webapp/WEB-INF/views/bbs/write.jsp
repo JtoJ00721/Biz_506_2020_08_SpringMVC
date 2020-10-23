@@ -36,7 +36,7 @@ form#write-form input {
 }
 
 form#write-form textarea {
-	width: 70%;
+	width: 80%;
 }
 
 div.button-box {
@@ -80,7 +80,7 @@ button#save {
 
 		$("#b_content").summernote({
 			lang : "ko-KR",
-			width : "80%",
+			width : "100%",
 			height : "200px",
 			toolbar : toolbar
 		});
@@ -107,6 +107,10 @@ button#save {
 		</div>
 		<div>
 			<label>이미지</label> <input type="file" name="file" accept="image/*">
+		</div>
+		<div>
+			<label>멀티이미지</label> <input type="file" name="files" accept="image/*"
+				multiple="multiple">
 		</div>
 		<div class="button-box">
 			<a href="${rootPath}/bbs/list"><button type="button" id="list">리스트로</button></a>

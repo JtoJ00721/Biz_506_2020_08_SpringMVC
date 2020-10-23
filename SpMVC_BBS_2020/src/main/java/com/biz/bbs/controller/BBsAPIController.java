@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.biz.bbs.model.BBsVO;
 import com.biz.bbs.service.BBsService;
+import com.biz.bbs.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +31,10 @@ public class BBsAPIController {
 	@Autowired
 	@Qualifier("bbsServiceV1")
 	private BBsService bbsService;
+
+	@Autowired
+	@Qualifier("fileServiceV4")
+	private FileService fileService;
 
 	// http://127.0.0.:5500에서 api 요청이 오면, CORS Policy를 무시하고 응답하라
 	// @CrossOrigin("http://127.0.0.1:5500")
@@ -63,7 +68,7 @@ public class BBsAPIController {
 
 		log.debug("POST로 요청된 메소드");
 		log.debug("BBSVO {}", bbsVO.toString());
-		log.debug("업로드한 파일정보 {}",file.getOriginalFilename());
+		log.debug("업로드한 파일정보 {}", file.getOriginalFilename());
 
 		return "bbs_insert";
 	}
@@ -98,6 +103,13 @@ public class BBsAPIController {
 		log.debug("DELETE RequestMethod Type으로 요청된 메소드");
 		log.debug("시퀀스값 {}", data.get("seq"));
 		return "bbs_delete";
+	}
+
+	@RequestMapping(value = "/file", method = RequestMethod.POST)
+	public String file_up(@RequestParam("file") MultipartFile file) {
+
+		String ret_file = fileService.fileUp(file);
+		return ret_file;
 	}
 
 }

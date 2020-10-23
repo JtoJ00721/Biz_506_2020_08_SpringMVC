@@ -55,14 +55,6 @@ section#bbs-detail-body {
 	text-align: center;
 }
 
-#detail-menu a:first-child {
-	
-}
-
-#detail-menu a:nth-child(2) {
-	
-}
-
 #bbs-button-box {
 	width: 50%;
 	margin: 10px auto;
@@ -99,8 +91,12 @@ section#bbs-detail-body {
 </style>
 <section id="bbs-detail-header">
 	<article>
-		<a href="${rootPath}/upload/${BBSVO.b_file}" target=_new><img
-			src="${rootPath}/upload/${BBSVO.b_file}" width="200px"></a>
+		<a href="${rootPath}/upload/${BBSVO.b_file}" target=_new> <c:if
+				test="${empty BBSVO.b_file}">
+				<img src="${rootPath}/static/files/noImage.png" width="100px">
+			</c:if> <c:if test="${not empty BBSVO.b_file}">
+				<img src="${rootPath}/upload/${BBSVO.b_file}" width="200px">
+			</c:if></a>
 	</article>
 	<article>
 		<div class="title">제목</div>
@@ -117,6 +113,26 @@ section#bbs-detail-body {
 	<button class="list">리스트로</button>
 	<button class="update">수정</button>
 	<button class="delete">삭제</button>
+</section>
+
+<style>
+#images-box {
+	width: 50%;
+	margin: 10px auto;
+	padding: 5px;
+}
+
+#images-box img {
+	margin: 3px;
+	border-radius: 100px;
+}
+</style>
+<section id="images-box">
+	<c:if test="${not empty BBSVO.images}">
+		<c:forEach items="${BBSVO.images}" var="image">
+			<img src="${rootPath}/upload/${image.i_file_name}" width="100px">
+		</c:forEach>
+	</c:if>
 </section>
 
 <script>
