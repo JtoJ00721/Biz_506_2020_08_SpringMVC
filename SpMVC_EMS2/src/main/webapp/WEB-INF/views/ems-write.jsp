@@ -12,23 +12,24 @@
 <body>
 	<form method="POST">
 		<div>
-			<label>보내는 이메일</label> <input name="from_email" />
+			<label>보내는 이메일</label> <input name="from_email"
+				value="${EMS.from_email}" />
 		</div>
 		<div>
-			<label>받는 이메일</label> <input name="to_email" />
+			<label>받는 이메일</label> <input name="to_email" value="${EMS.to_email}" />
 		</div>
 		<div>
-			<label>보내는 날짜</label> <input name="s_date" />
+			<label>보내는 날짜</label> <input name="s_date" value="${EMS.s_date}" />
 		</div>
 		<div>
-			<label>보내는 시각</label> <input name="s_time" />
+			<label>보내는 시각</label> <input name="s_time" value="${EMS.s_time}" />
 		</div>
 		<div>
-			<label>제목</label> <input name="s_subject" />
+			<label>제목</label> <input name="s_subject" value="${EMS.s_subject}" />
 		</div>
 		<div>
 			<label>내용용이</label>
-			<textarea name="s_content"></textarea>
+			<textarea name="s_content">${EMS.s_content}</textarea>
 		</div>
 		<div>
 			<label>첨부파일</label> <input name="file1" /> <input name="file2" />

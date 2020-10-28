@@ -22,7 +22,9 @@ public class EmsServiceImpl implements EmsService {
 
 	@Override
 	public EmsVO findById(Long id) {
-		return null;
+
+		EmsVO emsVO = emsDao.findById(id);
+		return emsVO;
 	}
 
 	@Override

@@ -51,22 +51,33 @@ public class HomeController {
 			log.debug("\n\n\nINSERT 실패 ><\n\n\n");
 		}
 		
-		model.addAttribute("from_email", emsVO.getFrom_email());
-		model.addAttribute("to_email", emsVO.getTo_email());
-		model.addAttribute("s_subject", emsVO.getS_subject());
+//		model.addAttribute("from_email", emsVO.getFrom_email());
+//		model.addAttribute("to_email", emsVO.getTo_email());
+//		model.addAttribute("s_subject", emsVO.getS_subject());
 
 		model.addAttribute("EMS", emsVO);
 
 		return "redirect:/";
 	}
 
+	/*
+	 * 목록보기에서 제목을 클릭하면
+	 * id값을 변수로 넘기면서 update, GET로 호출이 된다.
+	 * id값으로 findById() 조회를 해서 EmsVO를 DB로부터 Select하고
+	 * 그 결과를 model에 담아서 다시 ems-write.jsp로 보내기 
+	 */
 	@RequestMapping(value = "/update", method = RequestMethod.GET)
-	public String update(String id) {
+	public String update(String id, Model model) {
+		Long long_id = Long.valueOf(id);
+		EmsVO emsVO = emsService.findById(long_id);
+		model.addAttribute("EMS", emsVO);
 		return "ems-write";
 	}
+	
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update() {
+	public String update(EmsVO emsVO) {
+		log.debug("UPDATE 요청 데이터 {}", emsVO.toString());
 		return "ems-view";
 	}
 
