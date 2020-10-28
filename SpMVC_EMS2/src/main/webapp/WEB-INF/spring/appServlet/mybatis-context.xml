@@ -21,6 +21,8 @@
 
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="oracle_ds" />
+		<property name="mapperLocations"
+			value="/WEB-INF/spring/mapper/*-mapper.xml" />
 		<property name="typeAliasesPackage" value="com.biz.ems.model" />
 		<property name="configuration">
 			<bean class="org.apache.ibatis.session.Configuration">

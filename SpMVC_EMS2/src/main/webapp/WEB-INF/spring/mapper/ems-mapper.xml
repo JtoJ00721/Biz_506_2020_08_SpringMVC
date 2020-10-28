@@ -27,7 +27,6 @@
 		#{s_file1},
 		#{s_file2}
 		)
-
 	</insert>
 
 </mapper>
