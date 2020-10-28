@@ -17,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.biz.ems.model.EmsVO;
 import com.biz.ems.service.EmsService;
+import com.biz.ems.service.FileService;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +28,9 @@ public class HomeController {
 	@Autowired
 	@Qualifier("emsServiceV1")
 	private EmsService emsService;
+
+	@Autowired
+	private FileService fileService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -57,6 +61,20 @@ public class HomeController {
 			@RequestParam(value = "file2", required = false) MultipartFile file2) {
 
 		log.debug("\n\n\n EMSVO {} \n\n\n", emsVO.toString());
+		log.debug("file1 {}", file1.getOriginalFilename());
+		log.debug("file2 {}\n\n\n", file2.getOriginalFilename());
+
+		String file1Name = null;
+		String file2Name = null;
+
+		if (!file1.getOriginalFilename().isEmpty()) {
+			file1Name = fileService.fileUp(file1);
+			emsVO.setS_file1(file1Name);
+		}
+		if (!file2.getOriginalFilename().isEmpty()) {
+			file2Name = fileService.fileUp(file2);
+			emsVO.setS_file2(file2Name);
+		}
 
 		int ret = emsService.insert(emsVO);
 		if (ret > 0) {
