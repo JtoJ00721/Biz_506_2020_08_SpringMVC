@@ -47,6 +47,7 @@ table#ems-list {
 				<th>발송일자</th>
 				<th>발송 시각</th>
 				<th>제목</th>
+				<th>삭제</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -64,6 +65,8 @@ table#ems-list {
 					<td>${ems.s_time}</td>
 					<td><a href="${rootPath}/update?id=${ems.id}">
 							${ems.s_subject} </a></td>
+
+					<td><a href="${rootPath}/delete?id=${ems.id}">삭제</a></td>
 				</tr>
 			</c:forEach>
 		</tbody>

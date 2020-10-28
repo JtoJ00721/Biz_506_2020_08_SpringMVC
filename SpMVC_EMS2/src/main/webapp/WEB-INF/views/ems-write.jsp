@@ -10,7 +10,7 @@
 <title>작성창</title>
 </head>
 <body>
-	<form method="POST">
+	<form method="POST" enctype= "multipart/form-data">
 		<div>
 			<label>보내는 이메일</label> <input name="from_email"
 				value="${EMS.from_email}" />
@@ -32,7 +32,7 @@
 			<textarea name="s_content">${EMS.s_content}</textarea>
 		</div>
 		<div>
-			<label>첨부파일</label> <input name="file1" /> <input name="file2" />
+			<label>첨부파일</label> <input type="file" name="file1" /> <input type="file" name="file2" />
 		</div>
 		<div>
 			<button>저장</button>
