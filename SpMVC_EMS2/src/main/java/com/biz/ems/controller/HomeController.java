@@ -64,16 +64,16 @@ public class HomeController {
 		log.debug("file1 {}", file1.getOriginalFilename());
 		log.debug("file2 {}\n\n\n", file2.getOriginalFilename());
 
-		String file1Name = null;
-		String file2Name = null;
+		String file_1_Name = null;
+		String file_2_Name = null;
 
 		if (!file1.getOriginalFilename().isEmpty()) {
-			file1Name = fileService.fileUp(file1);
-			emsVO.setS_file1(file1Name);
+			file_1_Name = fileService.fileUp(file1);
+			emsVO.setS_file1(file_1_Name);
 		}
 		if (!file2.getOriginalFilename().isEmpty()) {
-			file2Name = fileService.fileUp(file2);
-			emsVO.setS_file2(file2Name);
+			file_2_Name = fileService.fileUp(file2);
+			emsVO.setS_file2(file_2_Name);
 		}
 
 		int ret = emsService.insert(emsVO);
@@ -105,8 +105,49 @@ public class HomeController {
 	}
 
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
-	public String update(EmsVO emsVO) {
+	public String update(EmsVO emsVO, @RequestParam(value = "file1", required = false) MultipartFile file1,
+			@RequestParam(value = "file2", required = false) MultipartFile file2) {
 		log.debug("UPDATE 요청 데이터 {}", emsVO.toString());
+
+		// 1. update할 데이터의 id값을 추출
+		Long id = emsVO.getId();
+		// 2. DB에 저장된 데이터를 id값으로 select하여 추출
+		EmsVO emsOldVO = emsService.findById(id);
+
+		boolean file1_ex = file1.getOriginalFilename().isEmpty();
+		// 3. upload된 file1이 있는지 검사해서 emsVO에 setting
+		// 3-1 upload된 file1이 있으면
+		if (!file1_ex) {
+
+			// 3-2 파일을 서버 저장소에 저장하고 파일이름 추출
+			String file_1_Name = fileService.fileUp(file1);
+
+			// 3-3 DB에 저장된 데이터에 파일이름이 있는지 검사
+			if (emsOldVO.getS_file1() != null && !emsOldVO.getS_file1().isEmpty()) {
+
+				// 3-4 있으면 서버에서 파일을 삭제
+				fileService.fileDelete(emsOldVO.getS_file1());
+			}
+			// 3-5 새로 변경된 파일이름을 VO에 저장하여 update 준비
+			emsVO.setS_file1(file_1_Name);
+
+			// 3-6 upload된 파일이 없으면
+		} else if (file1.getOriginalFilename().isEmpty()) {
+			// 3-7 db네서 추출한 vo에서 파일이름을 update할 vo에 복사
+			emsVO.setS_file1(emsOldVO.getS_file1());
+		}
+
+		boolean file2_ex = file2.getOriginalFilename().isEmpty();
+		// 4. upload된 file2이 있는지 검사해서 emsVO에 setting
+		if (!file2_ex) {
+			String file_2_Name = fileService.fileUp(file2);
+			if (emsOldVO.getS_file2() != null && !emsOldVO.getS_file2().isEmpty()) {
+				fileService.fileDelete(emsOldVO.getS_file2());
+			}
+			emsVO.setS_file1(file_2_Name);
+		} else if (file2.getOriginalFilename().isEmpty()) {
+			emsVO.setS_file2(emsOldVO.getS_file2());
+		}
 
 		int ret = emsService.update(emsVO);
 		if (ret > 0) {
@@ -122,6 +163,18 @@ public class HomeController {
 	public String delete(String id) {
 
 		Long long_id = Long.valueOf(id);
+		
+		EmsVO emsVO = emsService.findById(long_id);
+		
+		if(emsVO.getS_file1() != null) {
+			fileService.fileDelete(emsVO.getS_file1());
+		}
+		
+		if(emsVO.getS_file2() != null) {
+			fileService.fileDelete(emsVO.getS_file2());
+		}
+
+		
 		int ret = emsService.delete(long_id);
 		if (ret > 0) {
 			log.debug("\n\n\n삭제된 데이터 개수 {}\n\n\n", ret);

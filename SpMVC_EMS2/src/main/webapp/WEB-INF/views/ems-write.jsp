@@ -32,7 +32,16 @@
 			<textarea name="s_content">${EMS.s_content}</textarea>
 		</div>
 		<div>
-			<label>첨부파일</label> <input type="file" name="file1" /> <input type="file" name="file2" />
+			<label>첨부파일1</label> <input type="file" name="file1" />
+		</div>
+		<div>
+			<img src="${rootPath}/files/${EMS.s_file1}" width="100px">
+		</div>
+		<div>
+			<label>첨부파일2</label> <input type="file" name="file2" />
+		</div>
+		<div>
+			<img src="${rootPath}/files/${EMS.s_file2}" width="100px">
 		</div>
 		<div>
 			<button>저장</button>

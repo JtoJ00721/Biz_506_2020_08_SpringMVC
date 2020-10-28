@@ -66,6 +66,11 @@ public class FileServiceImpl implements FileService{
 
 	@Override
 	public int fileDelete(String fileName) {
+		
+		File delFile = new File(this.fileUploadPath, fileName);
+		if(delFile.exists()) {
+			delFile.delete();
+		}
 		return 0;
 	}
 	
