@@ -7,28 +7,16 @@
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
 <title>여기는 제목</title>
-<style>
-	table#ems-list {
-		width: 80%;
-		margin: 10px auto;
-		border-collapse: collapse;
-		border: 3px dashed aqua;
-	}
-</style>
 </head>
 <body>
-<table id="ems-list">
-	<tr>
-		<th>발송 Email</th>
-		<th>수신 Email</th>
-		<th>발송일자</th>
-		<th>발송 시각</th>
-		<th>제목</th>
-	</tr>
-	
-</table>
-<div>
-	<a href="${rootPath}/write">메일작성</a>
-</div>
+
+<p>보내는 Email : ${EMS.from_email}</p>
+<p>받는 Email : ${EMS.to_email}</p>
+<p>보내는 날짜 : ${EMS.s_date}</p>
+<p>보내는 시각 : ${EMS.s_time}</p>
+<p>제목 : ${EMS.s_subject}</p>
+<p>내용용이 : ${EMS.s_content}</p>
+
 </body>
+<a href="${rootPath}/">리스트로</a>
 </html>

@@ -1,39 +1,54 @@
 package com.biz.ems.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-/**
- * Handles requests for the application home page.
- */
+import com.biz.ems.model.EmsVO;
+
 @Controller
 public class HomeController {
-	
-	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
+
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
+
 		return "home";
 	}
-	
+
+	@RequestMapping(value = "/write", method = RequestMethod.GET)
+	public String write() {
+		return "ems-write";
+	}
+
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
+//	public String write(String from_email, String to_email, String s_subject, Model model) {
+	public String write(@ModelAttribute EmsVO emsVO, Model model) {
+
+		model.addAttribute("from_email", emsVO.getFrom_email());
+		model.addAttribute("to_email", emsVO.getTo_email());
+		model.addAttribute("s_subject", emsVO.getS_subject());
+
+		model.addAttribute("EMS", emsVO);
+
+		return "ems-view";
+	}
+
+	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	public String update(String id) {
+		return "ems-write";
+	}
+
+	@RequestMapping(value = "/update", method = RequestMethod.POST)
+	public String update() {
+		return "ems-view";
+	}
+
+	public String delete(String id) {
+		return "redirect:/";
+	}
+
 }
