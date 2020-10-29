@@ -35,8 +35,8 @@ public class EmsController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
 
-		//List<EmsVO> emsList = emsService.selectAll();
-		//model.addAttribute("EMS_LIST", emsList);
+		List<EmsVO> emsList = emsService.selectAll();
+		model.addAttribute("EMS_LIST", emsList);
 
 		return "home";
 	}

@@ -1,11 +1,15 @@
 package com.biz.ems.config;
 
+import java.io.IOException;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.ibatis.type.JdbcType;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.annotation.MapperScan;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
@@ -18,6 +22,13 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class MybatisConfig {
 
 	// datasource, sqlSessionFactoryBean,transactionManager(sqlSessionTemplate)
+	/*
+	 * project, server의 물리적인 위치의 파일을 읽거나 기록할때
+	 * 위치를 찾는 용도의 클래스
+	 */
+	
+	@Autowired
+	ApplicationContext context;
 
 	@Bean
 	public DataSource ds() {
@@ -34,7 +45,15 @@ public class MybatisConfig {
 
 		SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
 		bean.setDataSource(this.ds());
-		// bean.setMapperLocations("");
+		
+		// xml mapper를 사용할때 설정방법
+//		try {
+//			bean.setMapperLocations(context.getResources("classpath:/**/mapper/*-mapper.xml"));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+		
+		
 		bean.setTypeAliasesPackage("com.biz.ems.model");
 
 		org.apache.ibatis.session.Configuration config = new org.apache.ibatis.session.Configuration();
