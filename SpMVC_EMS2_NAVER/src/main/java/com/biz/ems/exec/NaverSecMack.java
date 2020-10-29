@@ -1,5 +1,7 @@
 package com.biz.ems.exec;
 
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -29,13 +31,30 @@ public class NaverSecMack {
 		String email = scan.nextLine();
 		System.out.print("비밀번호 : ");
 		String password = scan.nextLine();
-		
+
 		StandardPBEStringEncryptor pbe = new StandardPBEStringEncryptor();
+		pbe.setAlgorithm("PBEWithMD5AndDES");
+		pbe.setPassword(saltPass);
+
 		String encEmail = pbe.encrypt(email);
 		String encPass = pbe.encrypt(password);
-		
-		System.out.println("Email : " + encEmail);
-		System.out.println("Pass : " + encPass);
+
+		String props_email = String.format("naver.email=ENC(%s)", encEmail);
+		String props_password = String.format("naver.password=ENC(%s)", encPass);
+
+		System.out.println("Email : " + props_email);
+		System.out.println("Pass : " + props_password);
+
+		try {
+			PrintWriter out = new PrintWriter(propsFile);
+			out.println(props_email);
+			out.println(props_password);
+			out.flush();
+			out.close();
+			System.out.println("설정파일이 저장됐지롱 ><");
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
 
 	}
 }
