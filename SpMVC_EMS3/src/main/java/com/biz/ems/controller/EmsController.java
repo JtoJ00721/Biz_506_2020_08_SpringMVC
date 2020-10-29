@@ -22,14 +22,14 @@ import com.biz.ems.service.FileService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-//@Controller
+@Controller
 public class EmsController {
 
-	//@Autowired
-	//@Qualifier("emsServiceV1")
+	@Autowired
+	@Qualifier("emsServiceV1")
 	private EmsService emsService;
 
-	//@Autowired
+	@Autowired
 	private FileService fileService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
