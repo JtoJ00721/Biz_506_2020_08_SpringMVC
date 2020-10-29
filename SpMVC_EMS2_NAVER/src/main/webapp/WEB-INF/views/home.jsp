@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>여기는 제목</title>
+<title>내가보낸 메일</title>
 <style>
 table#ems-list {
 	width: 80%;

@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>여기는 제목</title>
+<title>이게 니가보낸 메일</title>
 </head>
 <body>
 

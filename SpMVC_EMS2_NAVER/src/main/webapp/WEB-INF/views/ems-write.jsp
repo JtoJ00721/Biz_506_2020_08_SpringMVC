@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name='viewport' content='width=device-width, initial-scale=1'>
-<title>작성창</title>
+<title>메일 작성창</title>
 </head>
 <body>
 	<form method="POST" enctype= "multipart/form-data">
