@@ -23,12 +23,12 @@ import lombok.ToString;
 @Builder
 
 @Entity
-@Table(name = "tbl_bbs", schema = "user1")
+@Table(name = "tbl_book", schema = "user1")
 public class BookVO {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "S_BBS")
-	@SequenceGenerator(name = "S_BBS", sequenceName = "SEQ_BBS", allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "S_BOOK")
+	@SequenceGenerator(name = "S_BOOK", sequenceName = "SEQ_BOOK", allocationSize = 1)
 	private long id;
 
 	@Column(name = "title", columnDefinition = "nVARCHAR2(1300)")

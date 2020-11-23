@@ -1,47 +1,69 @@
 package com.biz.book.service;
 
-import java.awt.print.Pageable;
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 import com.biz.book.domain.BookVO;
+import com.biz.book.repository.BookRepository;
 
+@Service
+@Qualifier("bookServiceV1")
 public class BookServiceImplV1 implements BookService {
+
+	private final BookRepository bookDao;
+
+	public BookServiceImplV1(BookRepository bookDao) {
+		this.bookDao = bookDao;
+	}
 
 	@Override
 	public List<BookVO> selectAll() {
-		// TODO Auto-generated method stub
-		return null;
+
+		List<BookVO> bookList = bookDao.findAll();
+		return bookList;
 	}
 
 	@Override
 	public Page<BookVO> pageSelect(Pageable pageable) {
-		// TODO Auto-generated method stub
-		return null;
+
+		int pageNumber = pageable.getPageNumber();
+		pageNumber = pageNumber == 0 ? 0 : pageNumber - 1;
+
+		pageable = PageRequest.of(pageNumber, 10);
+
+		Page<BookVO> bookPage = bookDao.findAll(pageable);
+
+		return bookPage;
 	}
 
 	@Override
 	public BookVO findById(Long id) {
-		// TODO Auto-generated method stub
-		return null;
+
+		Optional<BookVO> bookVO = bookDao.findById(id);
+		return bookVO.get();
 	}
 
 	@Override
 	public int insert(BookVO bookVO) {
-		// TODO Auto-generated method stub
+		bookDao.save(bookVO);
 		return 0;
 	}
 
 	@Override
 	public int update(BookVO bookVO) {
-		// TODO Auto-generated method stub
+		bookDao.save(bookVO);
 		return 0;
 	}
 
 	@Override
 	public int delete(Long id) {
-		// TODO Auto-generated method stub
+		bookDao.deleteById(id);
 		return 0;
 	}
 
