@@ -1,4 +1,4 @@
-package com.biz.book;
+package com.biz.book.controller;
 
 import java.text.DateFormat;
 import java.util.Date;

@@ -11,7 +11,8 @@
 
 	<bean id="oracleDS"
 		class="org.apache.commons.dbcp2.BasicDataSource">
-		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+		<property name="driverClassName"
+			value="oracle.jdbc.driver.OracleDriver" />
 		<property name="url"
 			value="jdbc:oracle:thin:@localhost:1521:xe" />
 		<property name="username" value="user1" />
@@ -27,12 +28,14 @@
 	<!-- JPA의 exception을 spring exception으로 변환하기 -->
 	<bean
 		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
-		
-		<bean class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
-		<property name="dataSource" ref="oracleDS"/>
-		<property name="packagesToScan" value="com.biz.book.domain"/>
+
+	<bean
+		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="dataSource" ref="oracleDS" />
+		<property name="packagesToScan" value="com.biz.book.domain" />
 		<property name="jpaVendorAdapter">
-			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"></bean>
+			<bean
+				class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter"></bean>
 		</property>
 		<property name="jpaProperties">
 			<props>
@@ -45,7 +48,9 @@
 				<prop key="use_new_generator_mapping">true</prop>
 			</props>
 		</property>
-		</bean>
+	</bean>
+	<jpa:repositories
+		base-package="com.biz.book.repository" />
 
 
 </beans>
