@@ -1,4 +1,4 @@
-<script>
+<script th:inline="javascript">
 	document.addEventListener("DOMContentLoaded", function() {
 		document.querySelector("div.button-box").addEventListener("click",
 				function(e) {
@@ -8,11 +8,16 @@
 
 					if (className === "btn-delete") {
 						if (confirm("정말 삭제? ><")) {
-							document.location.replace(`/book/delete/${id}`)
+							/*<![CDATA[*/
+							let url = /*[[@{/book/delete/}]]*/
+							document.location.replace(`${url}?id=${id}`)
 						}
 					}
 					if (className === "btn-update") {
-						document.location.href = `/book/update/${id}`
+						/*<![CDATA[*/
+						let url = /*[[@{/book/update/}]]*/
+						document.location.href = `${url}?id=${id}`
+						/*]]*/
 					}
 
 				})
