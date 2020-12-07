@@ -32,6 +32,12 @@ public class EmpRestController {
 		return empService.findById(id);
 	}
 
+	@RequestMapping(value = "/delete/{id}")
+	public int delete(@PathVariable("id") Long id) {
+		
+		return empService.delete(id);
+	}
+
 	@RequestMapping(value = "/put", method = RequestMethod.GET)
 	public int insertYeem() {
 
@@ -46,7 +52,7 @@ public class EmpRestController {
 		return empService.insert(empVO);
 
 	}
-	
+
 	@RequestMapping(value = "/update/{id}")
 	public int insertYeem(@PathVariable("id") Long id) {
 
