@@ -18,16 +18,14 @@ public class EmployeesServiceImplV1 implements EmployeesService {
 
 	@Override
 	public List<EmployeesVO> selectAll() {
-		List<EmployeesVO> empAllList = empDao.seletctAll();
-		return empAllList;
+		
+		return empDao.seletctAll();
 	}
 
 	@Override
 	public EmployeesVO findById(Long id) {
 
-		EmployeesVO empVO = empDao.findById(id);
-
-		return empVO;
+		return empDao.findById(id);
 	}
 
 	@Override

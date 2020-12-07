@@ -1,12 +1,10 @@
-package com.biz.bbs.mapper;
+package com.biz.bbs.service;
 
 import java.util.List;
 
-import com.biz.bbs.model.EmployeesVO;
+public interface GenericService <VO, PK>{
 
-public interface GenericDao<VO, PK> {
-
-	public List<VO> seletctAll();
+	public List<VO> selectAll();
 
 	public VO findById(PK id);
 
@@ -15,5 +13,4 @@ public interface GenericDao<VO, PK> {
 	public int update(VO vo);
 
 	public int delete(PK id);
-
 }
