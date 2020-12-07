@@ -32,12 +32,14 @@ div {
 		<button type="button" id="new_nong">농농이 클론 추가</button>
 		<button type="button" id="user_list">모든 사용자 보기</button>
 		<button type="button" id="select_user">선택한 사용자 보기</button>
+		<button type="button" id="update_user">사용자 업데yee트</button>
 	</div>
 	
 	<div id="textinter">
 		<button type="button" id="new_text">농농이가 끄적인 글 추가</button>
 		<button type="button" id="text_list">모든 글 보기</button>
 		<button type="button" id="select_text">선택한 글 보기</button>
+		<button type="button" id="update_text">글 업데yee트</button>
 	</div>
 
 	<script>
@@ -45,6 +47,7 @@ div {
 			let nong = document.querySelector("#new_nong");
 			let userList = document.querySelector("#user_list")
 			let selectUser = document.querySelector("#select_user")
+			let updateUser = document.querySelector("#update_user")
 
 			nong.addEventListener("click", function() {
 				document.location.href = "${rootPath}/emp/put"
@@ -57,12 +60,17 @@ div {
 			selectUser.addEventListener("click", function() {
 				document.location.href = "${rootPath}/emp/select/3"
 			})
+			
+			updateUser.addEventListener("click", function() {
+				document.location.href = "${rootPath}/emp/update/3"
+			})
 
 			//-------------------------------------------------------------
 			
 			let text = document.querySelector("#new_text");
 			let textList = document.querySelector("#text_list")
 			let selectText = document.querySelector("#select_text")
+			let updateText = document.querySelector("#update_text")
 
 			text.addEventListener("click", function() {
 				document.location.href = "${rootPath}/notice/put"
@@ -74,6 +82,10 @@ div {
 			
 			selectText.addEventListener("click", function() {
 				document.location.href = "${rootPath}/notice/select/3"
+			})
+			
+			updateText.addEventListener("click", function() {
+				document.location.href = "${rootPath}/notice/update/3"
 			})
 		})
 	</script>
