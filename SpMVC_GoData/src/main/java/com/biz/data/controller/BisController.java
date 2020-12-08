@@ -17,7 +17,7 @@ public class BisController {
 	private BisServiceImplV1 bService;
 	
 	@ResponseBody
-	@RequestMapping(value = "/station", method = RequestMethod.GET, produces = "")
+	@RequestMapping(value = "/station", method = RequestMethod.GET)
 	public StationList station() {
 		return bService.getStation();
 	}

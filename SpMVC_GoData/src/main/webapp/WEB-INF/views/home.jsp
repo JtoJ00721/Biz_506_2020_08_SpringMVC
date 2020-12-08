@@ -45,6 +45,42 @@ nav.main-nav li:hover {
 	background-color: gray;
 	color: black;
 }
+
+.hosp-list {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 90%;
+	border: 1px solid #ccc;
+	margin: 20px auto;
+}
+
+.hosp-list th {
+	text-align: left;
+}
+
+.hosp-list tr {
+	border: 1px solid #ddd;
+	transition: all 0.5s;
+}
+
+.hosp-list tr:nth-child(even) {
+	background-color: #ccc;
+}
+
+.hosp-list tr:nth-child(odd) {
+	background-color: #fff;
+}
+
+.hosp-list tr:hover {
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+.hosp-list td, hosp-list th {
+	padding: 8px;
+	vertical-align: top;
+	white-space: nowrap; /* table의 text를 줄바꿈하지 말라 */
+}
 </style>
 
 
@@ -57,15 +93,54 @@ nav.main-nav li:hover {
 		<ul>
 			<li>Home</li>
 			<li><input /></li>
-			<li><input /></li>
+			<li>
+				<form>
+					<input type="search" name="hosp" placeholder="동물병원 이름을 입력한 후 Enter" />
+				</form>
+			</li>
 			<li class="get-station">정보 가져오기</li>
 		</ul>
 	</nav>
+
+	<section>
+		<table class="hosp-list">
+			<tr>
+				<th>병원이름</th>
+				<th>도로명주소</th>
+				<th>지번주소</th>
+				<th>전화번호</th>
+				<th>위도</th>
+				<th>경도</th>
+				<th>데이터기준일</th>
+			</tr>
+			<c:choose>
+				<c:when test="${empty H_LIST}">
+					<tr>
+						<td colspan="7">데이터가 없지롱</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${H_LIST}" var="hs">
+						<tr>
+							<td>${hs.apiDongName}</td>
+							<td>${hs.apiNewAddress}</td>
+							<td>${hs.apiOldAddress}</td>
+							<td>${hs.apiTel}</td>
+							<td>${hs.apiLat}</td>
+							<td>${hs.apiLng}</td>
+							<td>${hs.apiRegDate}</td>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</table>
+	</section>
 </body>
 <script>
 	document.addEventListener("DOMContentLoaded", function() {
 
-		let getStationButton = document.querySelector("nav.main-nav .get-station");
+		let getStationButton = document
+				.querySelector("nav.main-nav .get-station");
 		getStationButton.onclick = function() {
 			document.location.href = "${rootPath}/bis/station";
 		}
