@@ -1,4 +1,4 @@
-package com.biz.data;
+package com.biz.data.controller;
 
 import java.text.DateFormat;
 import java.util.Date;

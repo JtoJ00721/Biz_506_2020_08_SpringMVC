@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>버스 노선 검색</title>
 <style>
 * {
 	box-sizing: border-box;
@@ -34,8 +34,11 @@ nav.main-nav li:nth-child(2), nav.main-nav li:nth-child(3) {
 
 .main-nav li {
 	padding: 0.5rem;
+	margin: 3px;
 	cursor: pointer;
 	transition: all 0.7s;
+	border: 2px dashed black;
+	cursor: pointer;
 }
 
 nav.main-nav li:hover {
@@ -43,6 +46,8 @@ nav.main-nav li:hover {
 	color: black;
 }
 </style>
+
+
 </head>
 <body>
 	<header>
@@ -52,8 +57,17 @@ nav.main-nav li:hover {
 		<ul>
 			<li>Home</li>
 			<li><input /></li>
-			<li>노선정보 가져오기</li>
+			<li class="get-station">노선정보 가져오기</li>
 		</ul>
 	</nav>
 </body>
+<script>
+	document.addEventListener("DOMContentLoaded", function() {
+
+		let getStationButton = document.querySelector("nav.main-nav .get-station");
+		getStationButton.onclick = function() {
+			document.location.href = "${rootPath}/bis/station";
+		}
+	})
+</script>
 </html>
