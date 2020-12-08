@@ -51,13 +51,14 @@ nav.main-nav li:hover {
 </head>
 <body>
 	<header>
-		<h2>광주버스</h2>
+		<h2>공공DB 활용</h2>
 	</header>
 	<nav class="main-nav">
 		<ul>
 			<li>Home</li>
 			<li><input /></li>
-			<li class="get-station">노선정보 가져오기</li>
+			<li><input /></li>
+			<li class="get-station">정보 가져오기</li>
 		</ul>
 	</nav>
 </body>
