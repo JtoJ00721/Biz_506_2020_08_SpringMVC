@@ -26,8 +26,12 @@
 						placeholder="동물병원 이름을 입력한 후 Enter" />
 				</form>
 			</li>
-			<li><input /></li>
-			<li class="get-station">정보 가져오기</li>
+			<li>
+				<form action="${rootPath}/bis/station">
+					<input name="station" placeholder="정류소 입력후 Enter" />
+				</form>
+			</li>
+			<li class="get-station">노선정보 가져오기</li>
 		</ul>
 	</nav>
 
@@ -54,6 +58,21 @@
 		homeButton.onclick = function() {
 			document.location.href = "${rootPath}";
 		}
+
+		const select_cat = document.querySelector("select[name='cat']")
+		select_cat.onchange = function(e) {
+			// change 이벤트가 발생하면 value값을 추출하고
+			const value = e.target.value
+			let hopInput = document.querySelector("input[name='search']");
+			// value값이 hosp이면
+			if (value === 'hosp') {
+				// placeholder의 내용을 변경
+				hopInput.placeholder = "병원명 입력후 Enter"
+			} else {
+				hopInput.placeholder = "주소 입력후 Enter"
+			}
+		}
+
 	})
 </script>
 </html>
