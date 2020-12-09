@@ -19,11 +19,11 @@
 			<li id="home-button">Home</li>
 			<li>
 				<form>
-				<select name="search">
-					<option value="hosp">병원명</option>
-					<option value="addr">주소</option>
-				</select>
-					<input type="search" name="search" placeholder="동물병원 이름을 입력한 후 Enter" />
+					<select name="cat">
+						<option value="hosp">병원명</option>
+						<option value="addr">주소</option>
+					</select> <input type="search" name="search"
+						placeholder="동물병원 이름을 입력한 후 Enter" />
 				</form>
 			</li>
 			<li><input /></li>
@@ -35,8 +35,8 @@
 		<c:if test="${BODY == 'PET'}">
 			<%@ include file="/WEB-INF/views/pet_view.jsp"%>
 		</c:if>
-		<c:if test="${BODY == 'BIS'}">
-			<%@ include file="/WEB-INF/views/bis_view.jsp"%>
+		<c:if test="${BODY == 'STATION'}">
+			<%@ include file="/WEB-INF/views/station_view.jsp"%>
 		</c:if>
 	</section>
 
@@ -49,11 +49,11 @@
 		getStationButton.onclick = function() {
 			document.location.href = "${rootPath}/bis/station";
 		}
-		
+
 		let homeButton = document.querySelector("#home-button")
-		homeButton.addEventListener("onclick", function(){
-			document.location.href = "${rootPath}"
-		})
+		homeButton.onclick = function() {
+			document.location.href = "${rootPath}";
+		}
 	})
 </script>
 </html>

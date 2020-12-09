@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+.station {
+	width: 40%;
+	border: 1px solid #ddd;
+	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.station-list {
+	width: 90%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: 1px solid #ccc;
+}
+
+.station-list th {
+	text-align: left;
+}
+
+.station-list tr {
+	transition: all 0.5s;
+}
+
+.station-list tr:nth-child(even) {
+	background-color: #ccc;
+}
+
+.station-list tr:nth-child(odd) {
+	background-color: #ddd;
+}
+
+.station-list tr:nth-child(n+2):hover {
+	background-color: #aaa;
+	cursor: pointer;
+}
+
+.station-list td, .station-list th {
+	padding: 8px;
+	vertical-align: top;
+	white-space: nowrap;
+}
