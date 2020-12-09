@@ -1,0 +1,41 @@
+@charset "UTF-8";
+
+* {
+	box-sizing: border-box;
+}
+
+.hosp-list {
+	border-collapse: collapse;
+	border-spacing: 0;
+	width: 90%;
+	border: 1px solid #ccc;
+	margin: 20px auto;
+}
+
+.hosp-list th {
+	text-align: left;
+}
+
+.hosp-list tr {
+	border: 1px solid #ddd;
+	transition: all 0.5s;
+}
+
+.hosp-list tr:nth-child(even) {
+	background-color: #ccc;
+}
+
+.hosp-list tr:nth-child(odd) {
+	background-color: #fff;
+}
+
+.hosp-list tr:hover {
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+.hosp-list td, hosp-list th {
+	padding: 8px;
+	vertical-align: top;
+	white-space: nowrap; /* table의 text를 줄바꿈하지 말라 */
+}

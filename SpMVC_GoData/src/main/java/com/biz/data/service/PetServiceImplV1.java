@@ -6,6 +6,7 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -15,22 +16,26 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import com.biz.data.config.DataGoConfig;
-import com.biz.data.model.GoPetVO;
-import com.biz.data.model.RfcOpenAPI;
+import com.biz.data.model.pet.GoPetVO;
+import com.biz.data.model.pet.RfcOpenAPI;
 
 @Service
-public class PetServiceImplV1 {
+public class PetServiceImplV1 implements PetService {
 
-	public List<GoPetVO> getHosp(String hosp) {
+	public List<GoPetVO> getHosp(String cat, String search) {
 
 		String queryString = DataGoConfig.PET_URL;
 		queryString += "/getDongMulHospital";
 		queryString += "?ServiceKey=" + DataGoConfig.SERVICE_KEY;
 		queryString += "&pageNo=1";
-		queryString += "&numofRows=100";
+		queryString += "&numOfRows=100";
 		try {
-			if (!hosp.isEmpty()) {
-				queryString += "&dongName=" + URLEncoder.encode(hosp, "UTF-8");
+			if (!search.isEmpty()) {
+				if (cat.equalsIgnoreCase("HOSP")) {
+					queryString += "&dongName=" + URLEncoder.encode(search, "UTF-8");
+				} else {
+					queryString += "&address=" + URLEncoder.encode(search, "UTF-8");
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
