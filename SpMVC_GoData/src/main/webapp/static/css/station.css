@@ -6,36 +6,56 @@
 	box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
 }
 
-.station-list {
+table.bis {
 	width: 90%;
 	border-collapse: collapse;
 	border-spacing: 0;
 	border: 1px solid #ccc;
+	/*
+	table의 layout에서 문자열의 길이에 따라
+	테이블의 좌우 폭이 바뀌는 것을 방지하기
+	*/
+	width: 98%;
+	table-layout: fixed;
+	margin: 2px auto;
 }
 
-.station-list th {
+table.bis th {
 	text-align: left;
 }
 
-.station-list tr {
+table.bis tr {
 	transition: all 0.5s;
 }
 
-.station-list tr:nth-child(even) {
+table.bis tr:nth-child(even) {
 	background-color: #ccc;
 }
 
-.station-list tr:nth-child(odd) {
+table.bis tr:nth-child(odd) {
 	background-color: #ddd;
 }
 
-.station-list tr:nth-child(n+2):hover {
+table.bis tbody tr:hover {
 	background-color: #aaa;
 	cursor: pointer;
 }
 
-.station-list td, .station-list th {
+table.bis td, table.bis th {
 	padding: 8px;
 	vertical-align: top;
+	white-space: nowrap; /* table의 text를 줄바꿈하지 말라*/
+}
+
+table.bis td {
+	width: 20px;
+	text-align: left;
+	/*문자열이 넘칠경우 문자... 처럼 표시하게 하는 효과*/
 	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+table.bis td:hover {
+	overflow: visible;
 }

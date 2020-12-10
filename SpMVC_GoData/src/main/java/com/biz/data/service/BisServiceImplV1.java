@@ -116,7 +116,7 @@ public class BisServiceImplV1 implements BisService {
 			apiURI = new URI(queryString);
 			bisArrList = restTemp.exchange(apiURI, HttpMethod.GET, null, BisArriveList.class);
 
-			log.debug(bisArrList.getBody().toString());
+			log.debug(bisArrList.getBody().BUSSTOP_LIST.toString());
 			return bisArrList.getBody().BUSSTOP_LIST;
 		} catch (URISyntaxException e) {
 			e.printStackTrace();

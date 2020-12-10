@@ -2,84 +2,96 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="rootPath" value="${pageContext.request.contextPath}" />
-<link rel="stylesheet"
-	href="${rootPath}/static/css/station.css?ver=2020-12-09-3" />
-<article class="station">
-	<table class="station-list">
-		<tr>
-			<th>정류소ID</th>
-			<th>정류소병</th>
-			<th>다음정류소</th>
-		</tr>
-		<c:forEach items="${ST_LIST}" var="st">
-			<tr data-id="${st.BUSSTOP_ID}" class="st_tr">
-				<td>${st.STATION_NUM}</td>
-				<td>${st.BUSSTOP_NAME}</td>
-				<td>${st.NEXT_BUSSTOP}</td>
+<article class="station-list">
+	<table class="bis station-list">
+		<thead>
+
+			<tr>
+				<th>정류소ID</th>
+				<th>정류소병</th>
+				<th>다음정류소</th>
 			</tr>
-		</c:forEach>
+		</thead>
+		<tbody>
+			<c:choose>
+				<c:when test="${empty ST_LIST}">
+					<tr>
+						<td colspan="7">도착정보가 없음</td>
+					</tr>
+				</c:when>
+				<c:otherwise>
+					<c:forEach items="${ST_LIST}" var="st">
+						<tr data-id="${st.BUSSTOP_ID}" class="st_tr">
+							<td>${st.STATION_NUM}</td>
+							<td>${st.BUSSTOP_NAME}</td>
+							<td>${st.NEXT_BUSSTOP}</td>
+						</tr>
+					</c:forEach>
+				</c:otherwise>
+			</c:choose>
+		</tbody>
 	</table>
 </article>
 
 <script>
-	document.addEventListener("DOMContentLoaded", function() {
-//		// table의 tr.st_tr 의 이벤트 핸들링 설정
-//		document.querySelector(".st_tr").addEventListener("click", function(e) {
-//
-//			// 실재로 이벤트가 발생하는 곳은 TD tag이므로
-//			// 클릭된 TD의 부모(closest) tag인 TR에 data-id로
-//			// 설정된 값을 가져와서 busstop_id에 보관하라
-//			let busstop_id = e.target.closest("TR").dataset.id;
-//			let data = {
-//				station : busstop_id		
-//			}
-//			fetch("${rootPath}/bis/busstop",
-//					{
-//						method:'POST',
-//						headers : { "Content-Type" : "application/json"},
-//						body : JSON.stringify(data)
-//					},
-//			)
-//			.then(function(result){
-//				alert(result)
-//			})
-//			.catch(function(error){
-//				alert("서버 통신요류 ><")
-//			})
-//			alert(busstop_id);
-//			})
-//
-//		})
+document.addEventListener("DOMContentLoaded",function(){
+	// table에 이벤트 핸들링 설정
+	document.querySelector("table.station-list")
+			.addEventListener("click",function(e){
 		
-//--------------------------------------------------------------------------------------------------------		
-		
-		let st_tr = document.querySelectorAll(".st_tr");
-	
-		st_tr.forEach(function(e) {
-			
-		let busstop_id = e.getAttribute("data-id");
-		
-		e.addEventListener("click", function() {
-			
-			const data = {
-						station : busstop_id		
-					}
-					fetch("${rootPath}/bis/busstop",
-							{
-								method:'POST',
-								headers : { "Content-Type" : "application/json"},
-								body : JSON.stringify(data)
-							}
-					)
-					.then(function(result){
-						alert(result)
-					})
-					.catch(function(error){
-						alert("서버 통신요류 ><")
-					})
-					alert(busstop_id);
-					})
-
-			})
+		// 실제로 이벤트가 발생하는 곳은 TD tag이므로
+		// 클릭된 TD 의 부모(closest) tag인 TR에 data-id로
+		// 설정된 값을 가져와서 busstop_id에 보관하라
+		const busstop_id = e.target.closest("TR").dataset.id
+		const data = {
+			station : busstop_id
+		}
+		fetch("${rootPath}/bis/busstop",
+			{ 
+				method:"POST",
+				headers : { "Content-Type" : "application/json"},
+				body : JSON.stringify(data)
+			}
+		)
+		.then(function(result){
+			// fetch를 사용하여 JSON데이터를 가져올 경우
+			// 결과에서 json() method를 이용하여 본문부분만 추출해야 한다
+			return result.json()
 		})
+		.then(function(resData){
+			// resData는 도착정보 리스트가 담긴 상태이다
+			// JS 코드를 이용하여 데이터를 html tag로 생성하고
+			// 도착정보 view에 보이기를 하기
+			
+			// 보기위한 칼럼 이름 list
+			const stopTitleList = [
+				"LINE_NAME",
+				"BUSSTOP_NAME",
+				"REMAIN_MIN",
+				"REMAIN_STOP"
+				]
+			const tr_list = resData.map(function(bus) {
+				
+				// 데이터의 td 부분을 생성하여 list로 만들기
+				const td_list = stopTitleList.map(function(title) {
+				
+					// td tag를 생성
+					const td = document.createElement("TD")
+					console.log(bus[title])
+					// 각 버스정보를 td에 담기
+					td.textContent = bus[title]
+					return td
+				})
+				const tr = document.createElement("TR")
+				tr.append(...td_list)
+				return tr
+			})
+			document.querySelector("table.busstop-list tbody").innerHTML = "";
+			document.querySelector("table.busstop-list tbody").append(...tr_list)
+		})
+		.catch(function(error){
+			alert("서버 통신오류")
+		})
+	})
+})
 </script>

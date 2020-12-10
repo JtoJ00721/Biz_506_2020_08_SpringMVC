@@ -8,7 +8,9 @@
 <meta charset="UTF-8">
 <title>공공DB 활용</title>
 <link rel="stylesheet"
-	href="${rootPath}/static/css/main.css?ver=2020-12-09-2">
+	href="${rootPath}/static/css/main.css?ver=2020-12-10-1">
+	<link rel="stylesheet"
+	href="${rootPath}/static/css/station.css?ver=2020-12-10-2" />
 </head>
 <body>
 	<header>
@@ -35,12 +37,14 @@
 		</ul>
 	</nav>
 
-	<section>
-		<c:if test="${BODY == 'PET'}">
-			<%@ include file="/WEB-INF/views/pet_view.jsp"%>
-		</c:if>
+	<section class="main-body">
 		<c:if test="${BODY == 'STATION'}">
 			<%@ include file="/WEB-INF/views/station_view.jsp"%>
+			<%@ include file="/WEB-INF/views/busstop_view.jsp"%>
+		</c:if>
+
+		<c:if test="${BODY == 'PET'}">
+			<%@ include file="/WEB-INF/views/pet_view.jsp"%>
 		</c:if>
 	</section>
 

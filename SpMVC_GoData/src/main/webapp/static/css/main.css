@@ -8,7 +8,7 @@
 
 header {
 	padding: 2rem;
-	background-color: green;
+	background-color: coral;
 	text-align: center;
 	margin-bottom: 0px;
 }
@@ -38,9 +38,18 @@ nav.main-nav li:hover {
 	color: black;
 }
 
-nav.main-nav input,
-nav.main-nav select {
+nav.main-nav input, nav.main-nav select {
 	width: 200px;
 	border-radius: 5px;
 	padding: 5px;
+}
+
+.main-body {
+	display: flex;
+}
+
+.station-list, .busstop-list {
+	flex: 1 50%;
+	margin: 5px 2px;
+	border: 1px solid blue;
 }
