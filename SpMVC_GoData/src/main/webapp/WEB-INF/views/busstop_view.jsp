@@ -15,23 +15,11 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:choose>
-				<c:when test="${empty AR_LIST}">
-					<tr>
-						<td colspan="4">정류장을 클릭해야 하지롱</td>
-					</tr>
-				</c:when>
-				<c:otherwise>
-					<c:forEach items="${AR_LIST}" var="ar">
-						<tr>
-							<td>${ar.LINE_NUM}</td>
-							<td>${ar.BUSSTOP_NAME}</td>
-							<td>${ar.REMAIN_MIN}</td>
-							<td>${ar.REMAIN_STOP}</td>
-						</tr>
-					</c:forEach>
-				</c:otherwise>
-			</c:choose>
+			<c:if test="${empty AR_LIST}">
+				<tr>
+					<td colspan="4">정류장을 클릭해야 하지롱</td>
+				</tr>
+			</c:if>
 		</tbody>
 	</table>
 </article>
